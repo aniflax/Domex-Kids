@@ -35,16 +35,18 @@ const config = ({ env }: Core.Config.Shared.ConfigParams): Core.Config.Plugin =>
     config: {
       provider: 'aws-s3',
       providerOptions: {
-        endpoint: env('R2_ENDPOINT'),
-        region: 'auto',
-        credentials: {
-          accessKeyId: env('R2_ACCESS_KEY_ID'),
-          secretAccessKey: env('R2_SECRET_ACCESS_KEY'),
+        s3Options: {
+          endpoint: env('R2_ENDPOINT'),
+          region: 'auto',
+          credentials: {
+            accessKeyId: env('R2_ACCESS_KEY_ID'),
+            secretAccessKey: env('R2_SECRET_ACCESS_KEY'),
+          },
+          params: {
+            Bucket: env('R2_BUCKET_NAME'),
+          },
+          forcePathStyle: true,
         },
-        params: {
-          Bucket: env('R2_BUCKET_NAME'),
-        },
-        forcePathStyle: true,
       },
       actionOptions: {
         upload: {},
