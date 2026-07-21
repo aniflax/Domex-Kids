@@ -4,34 +4,20 @@ import { X } from "lucide-react";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { images } from "@/lib/site-config";
-import { useCategories, useProducts } from "@/lib/strapi";
-import type { Product } from "@/lib/strapi-types";
+import { fetchAllCategories, fetchAllProducts } from "@/lib/strapi";
+import type { Product, Category } from "@/lib/strapi-types";
 import heroImg from "../assets/hero.jpg";
 
 export const Route = createFileRoute("/products")({
   validateSearch: (search: Record<string, unknown>) => ({
     category: Number(search.category) || 0,
   }),
-  loader: async ({ context }) => {
-    const base = import.meta.env.VITE_STRAPI_URL || "https://domex-kids-strapi.onrender.com";
-    await Promise.all([
-      context.queryClient.prefetchQuery({
-        queryKey: ["strapi", "categories"],
-        queryFn: async () => {
-          const res = await fetch(`${base}/api/categories?populate=image`);
-          return res.json();
-        },
-        staleTime: 5 * 60 * 1000,
-      }),
-      context.queryClient.prefetchQuery({
-        queryKey: ["strapi", "products"],
-        queryFn: async () => {
-          const res = await fetch(`${base}/api/products?populate=category,photos`);
-          return res.json();
-        },
-        staleTime: 5 * 60 * 1000,
-      }),
+  loader: async () => {
+    const [cats, allProducts] = await Promise.all([
+      fetchAllCategories().catch(() => [] as Category[]),
+      fetchAllProducts().catch(() => [] as Product[]),
     ]);
+    return { cats, allProducts };
   },
   head: () => ({
     meta: [
@@ -56,11 +42,10 @@ export const Route = createFileRoute("/products")({
 
 function Products() {
   const { category } = Route.useSearch();
+  const { cats, allProducts } = Route.useLoaderData();
   const navigate = useNavigate();
   const [active, setActive] = useState<Product | null>(null);
   const [selectedImage, setSelectedImage] = useState(0);
-  const { data: cats = [] } = useCategories();
-  const { data: allProducts = [] } = useProducts();
   const filtered =
     category === 0 ? allProducts : allProducts.filter((p) => p.categoryId === category);
 

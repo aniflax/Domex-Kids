@@ -14,13 +14,9 @@ const STRAPI_URL =
     ? "https://domex-kids-strapi.onrender.com"
     : "http://localhost:1337");
 
-async function fetchAPI<T>(endpoint: string): Promise<T> {
-  const res = await fetch(`${STRAPI_URL}/api${endpoint}`, {
-    headers: { "Content-Type": "application/json" },
-  });
-  if (!res.ok) {
-    throw new Error(`Strapi API error: ${res.status} ${res.statusText}`);
-  }
+export async function fetchStrapi<T>(endpoint: string): Promise<T> {
+  const res = await fetch(`${STRAPI_URL}/api${endpoint}`);
+  if (!res.ok) throw new Error(`Strapi API error: ${res.status}`);
   return res.json();
 }
 
@@ -46,7 +42,7 @@ function extractYouTubeId(url: string): string {
   return url;
 }
 
-function mapProduct(sp: StrapiProduct): Product {
+export function mapProduct(sp: StrapiProduct): Product {
   const images = sp.photos?.length > 0 ? sp.photos.map((m) => mediaUrl(m)) : [];
   return {
     id: sp.id,
@@ -62,7 +58,7 @@ function mapProduct(sp: StrapiProduct): Product {
   };
 }
 
-function mapCategory(sc: StrapiCategory): Category {
+export function mapCategory(sc: StrapiCategory): Category {
   return {
     id: sc.id,
     name: sc.title,
@@ -71,7 +67,7 @@ function mapCategory(sc: StrapiCategory): Category {
   };
 }
 
-function mapVideo(sv: StrapiVideo): Video {
+export function mapVideo(sv: StrapiVideo): Video {
   return {
     title: sv.title,
     videoUrl: sv.videoUrl,
@@ -79,26 +75,39 @@ function mapVideo(sv: StrapiVideo): Video {
   };
 }
 
+export async function fetchHomeCategories(): Promise<Category[]> {
+  const res = await fetchStrapi<{ data: StrapiCategory[] }>(
+    "/categories?filters[showOnHomepage][$eq]=true&populate=image",
+  );
+  return res.data.map(mapCategory);
+}
+
+export async function fetchHomeProducts(): Promise<Product[]> {
+  const res = await fetchStrapi<{ data: StrapiProduct[] }>(
+    "/products?filters[showOnHomepage][$eq]=true&populate=category,photos",
+  );
+  return res.data.map(mapProduct);
+}
+
+export async function fetchAllProducts(): Promise<Product[]> {
+  const res = await fetchStrapi<{ data: StrapiProduct[] }>("/products?populate=category,photos");
+  return res.data.map(mapProduct);
+}
+
+export async function fetchAllCategories(): Promise<Category[]> {
+  const res = await fetchStrapi<{ data: StrapiCategory[] }>("/categories?populate=image");
+  return res.data.map(mapCategory);
+}
+
+export async function fetchVideos(): Promise<Video[]> {
+  const res = await fetchStrapi<{ data: StrapiVideo[] }>("/videos");
+  return res.data.map(mapVideo);
+}
+
 export function useCategories() {
   return useQuery({
     queryKey: ["strapi", "categories"],
-    queryFn: async () => {
-      const res = await fetchAPI<{ data: StrapiCategory[] }>("/categories?populate=image");
-      return res.data.map(mapCategory);
-    },
-    staleTime: 5 * 60 * 1000,
-  });
-}
-
-export function useHomeCategories() {
-  return useQuery({
-    queryKey: ["strapi", "categories", "home"],
-    queryFn: async () => {
-      const res = await fetchAPI<{ data: StrapiCategory[] }>(
-        "/categories?filters[showOnHomepage][$eq]=true&populate=image",
-      );
-      return res.data.map(mapCategory);
-    },
+    queryFn: fetchAllCategories,
     staleTime: 5 * 60 * 1000,
   });
 }
@@ -106,34 +115,7 @@ export function useHomeCategories() {
 export function useProducts() {
   return useQuery({
     queryKey: ["strapi", "products"],
-    queryFn: async () => {
-      const res = await fetchAPI<{ data: StrapiProduct[] }>("/products?populate=category,photos");
-      return res.data.map(mapProduct);
-    },
-    staleTime: 5 * 60 * 1000,
-  });
-}
-
-export function useHomeProducts() {
-  return useQuery({
-    queryKey: ["strapi", "products", "home"],
-    queryFn: async () => {
-      const res = await fetchAPI<{ data: StrapiProduct[] }>(
-        "/products?filters[showOnHomepage][$eq]=true&populate=category,photos",
-      );
-      return res.data.map(mapProduct);
-    },
-    staleTime: 5 * 60 * 1000,
-  });
-}
-
-export function useVideos() {
-  return useQuery({
-    queryKey: ["strapi", "videos"],
-    queryFn: async () => {
-      const res = await fetchAPI<{ data: StrapiVideo[] }>("/videos");
-      return res.data.map(mapVideo);
-    },
+    queryFn: fetchAllProducts,
     staleTime: 5 * 60 * 1000,
   });
 }

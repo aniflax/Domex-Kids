@@ -3,46 +3,20 @@ import { useEffect, useRef, useState } from "react";
 import { Check, ChevronDown, Clock, MapPin, Sparkles, Star, Truck, X } from "lucide-react";
 import { Reveal } from "@/components/site/Reveal";
 import { images } from "@/lib/site-config";
-import { useHomeCategories, useHomeProducts, useVideos } from "@/lib/strapi";
-import type { Product } from "@/lib/strapi-types";
+import { fetchHomeCategories, fetchHomeProducts, fetchVideos } from "@/lib/strapi";
+import type { Product, Category, Video } from "@/lib/strapi-types";
 
 import heroImg from "../assets/hero.jpg";
 import facilityImg from "../assets/facility.jpg";
 
 export const Route = createFileRoute("/")({
-  loader: async ({ context }) => {
-    await Promise.all([
-      context.queryClient.prefetchQuery({
-        queryKey: ["strapi", "categories", "home"],
-        queryFn: async () => {
-          const res = await fetch(
-            `${import.meta.env.VITE_STRAPI_URL || "https://domex-kids-strapi.onrender.com"}/api/categories?filters[showOnHomepage][$eq]=true&populate=image`,
-          );
-          return res.json();
-        },
-        staleTime: 5 * 60 * 1000,
-      }),
-      context.queryClient.prefetchQuery({
-        queryKey: ["strapi", "products", "home"],
-        queryFn: async () => {
-          const res = await fetch(
-            `${import.meta.env.VITE_STRAPI_URL || "https://domex-kids-strapi.onrender.com"}/api/products?filters[showOnHomepage][$eq]=true&populate=category,photos`,
-          );
-          return res.json();
-        },
-        staleTime: 5 * 60 * 1000,
-      }),
-      context.queryClient.prefetchQuery({
-        queryKey: ["strapi", "videos"],
-        queryFn: async () => {
-          const res = await fetch(
-            `${import.meta.env.VITE_STRAPI_URL || "https://domex-kids-strapi.onrender.com"}/api/videos`,
-          );
-          return res.json();
-        },
-        staleTime: 5 * 60 * 1000,
-      }),
+  loader: async () => {
+    const [homeCategories, homeProducts, videos] = await Promise.all([
+      fetchHomeCategories().catch(() => [] as Category[]),
+      fetchHomeProducts().catch(() => [] as Product[]),
+      fetchVideos().catch(() => [] as Video[]),
     ]);
+    return { homeCategories, homeProducts, videos };
   },
   head: () => ({
     meta: [
@@ -145,12 +119,10 @@ function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
 
 function Home() {
   useReveal();
+  const { homeCategories, homeProducts, videos } = Route.useLoaderData();
   const [quickView, setQuickView] = useState<Product | null>(null);
   const [selectedImage, setSelectedImage] = useState(0);
   const [video, setVideo] = useState<string | null>(null);
-  const { data: homeCategories = [] } = useHomeCategories();
-  const { data: homeProducts = [] } = useHomeProducts();
-  const { data: videos = [] } = useVideos();
 
   return (
     <>
@@ -171,7 +143,7 @@ function Home() {
                 for ages 1–16 years. Crafted in Delhi, delivered nationwide.
               </p>
               <div className="mt-9 flex flex-wrap gap-3">
-                <Link to="/products" search={{ category: "all" }} className="btn-solid">
+                <Link to="/products" search={{ category: 0 }} className="btn-solid">
                   Explore Collection
                 </Link>
                 <Link to="/contact" className="btn-outline">
