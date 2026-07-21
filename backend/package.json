@@ -16,8 +16,10 @@
   },
   "dependencies": {
     "@strapi/plugin-users-permissions": "5.50.2",
+    "@strapi/provider-upload-aws-s3": "^5.50.2",
     "@strapi/strapi": "5.50.2",
     "better-sqlite3": "12.8.0",
+    "pg": "^8.22.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.0.0",
