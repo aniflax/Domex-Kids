@@ -4,7 +4,7 @@ services:
     runtime: node
     repo: https://github.com/aniflax/Domex-Kids
     branch: main
-    rootDir: backend
+    rootDir: .
     buildCommand: npm install && npm run build
     startCommand: npm run start
     envVars:
