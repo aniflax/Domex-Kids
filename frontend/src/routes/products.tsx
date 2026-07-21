@@ -1,15 +1,18 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowRight, X } from "lucide-react";
+import { X } from "lucide-react";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionHeading } from "@/components/site/SectionHeading";
-import { products, images } from "@/lib/site-config";
+import { products, categories, images } from "@/lib/site-config";
 import shirtsImg from "../assets/shirts.jpg";
 import tshirtsImg from "../assets/tshirts.jpg";
 import jeansImg from "../assets/jeans.jpg";
 import heroImg from "../assets/hero.jpg";
 
 export const Route = createFileRoute("/products")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    category: (search.category as string) || "all",
+  }),
   head: () => ({
     meta: [
       { title: "Products — DOMEX KIDS Wholesale Kids Wear" },
@@ -24,8 +27,6 @@ export const Route = createFileRoute("/products")({
   component: Products,
 });
 
-const localProductImages = [shirtsImg, tshirtsImg, jeansImg];
-
 function localImg(slug: string) {
   const map: Record<string, string> = {
     "boys-shirts": shirtsImg,
@@ -36,7 +37,11 @@ function localImg(slug: string) {
 }
 
 function Products() {
+  const { category } = Route.useSearch();
+  const navigate = useNavigate();
   const [active, setActive] = useState<null | (typeof products)[number]>(null);
+  const filtered = category === "all" ? products : products.filter((p) => p.category === category);
+  const filteredImages = filtered.map((p) => localImg(p.slug));
 
   return (
     <>
@@ -44,43 +49,64 @@ function Products() {
         <div className="container-x">
           <Reveal><div className="text-xs uppercase tracking-[0.28em] text-brand font-medium mb-6">Collections</div></Reveal>
           <Reveal delay={100}>
-            <h1 className="font-serif text-5xl md:text-7xl leading-[1.02] max-w-3xl">
+            <h1 className="font-serif text-5xl md:text-7xl leading-[1.02]">
               Kids fashion, wholesale first.
             </h1>
-          </Reveal>
-          <Reveal delay={200}>
-            <p className="mt-6 max-w-xl text-muted-foreground text-lg">
-              Modern silhouettes and comfortable fabrics for ages 1–16. Explore each category and
-              request a quick-view for line sheets and swatches.
-            </p>
           </Reveal>
         </div>
       </section>
 
-      <section className="mt-16 md:mt-24">
+      {/* Segmented control */}
+      <section className="mt-16 md:mt-10">
+        <div className="container-x">
+          <Reveal>
+            <div className="inline-flex items-center gap-1.5 rounded-xl bg-muted p-1.5">
+              {categories.map((c) => (
+                <button
+                  key={c.slug}
+                  onClick={() => navigate({ to: "/products", search: { category: c.slug } })}
+                  className={`rounded-lg px-5 py-2.5 text-sm font-medium transition-all duration-300 ${
+                    category === c.slug
+                      ? "bg-background text-foreground shadow"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {c.name}
+                </button>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="mt-10 md:mt-14">
         <div className="container-x grid md:grid-cols-2 gap-6">
-          {products.map((p, i) => (
-            <Reveal key={p.slug} delay={i * 100}>
-              <article className={`hover-lift rounded-3xl overflow-hidden bg-white border border-border ${i === 0 ? "md:col-span-2" : ""}`}>
-                <div className={`zoom-img ${i === 0 ? "aspect-[16/9]" : "aspect-[5/4]"}`}>
-                  <img src={localProductImages[i]} alt={p.name} className="w-full h-full object-cover" loading="lazy" />
-                </div>
-                <div className="p-7 md:p-10 flex flex-wrap items-end justify-between gap-6">
-                  <div>
-                    <div className="text-xs uppercase tracking-[0.2em] text-brand">Ages 1–16</div>
-                    <h3 className="mt-2 font-serif text-3xl md:text-4xl">{p.name}</h3>
-                    <p className="mt-2 text-muted-foreground max-w-md">{p.description}</p>
+          {filtered.length === 0 ? (
+            <Reveal><p className="text-muted-foreground col-span-2">No products in this category yet.</p></Reveal>
+          ) : (
+            filtered.map((p, i) => (
+              <Reveal key={p.slug} delay={i * 100}>
+                <article className={`hover-lift rounded-3xl overflow-hidden bg-white border border-border ${filtered.length === 1 || (i === 0 && filtered.length % 2 === 1) ? "md:col-span-2" : ""}`}>
+                  <div className={`zoom-img ${filtered.length === 1 || (i === 0 && filtered.length % 2 === 1) ? "aspect-[16/9]" : "aspect-[5/4]"}`}>
+                    <img src={filteredImages[i]} alt={p.name} className="w-full h-full object-cover" loading="lazy" />
                   </div>
-                  <button
-                    onClick={() => setActive(p)}
-                    className="group inline-flex items-center gap-2 rounded-full bg-foreground text-background px-5 py-3 text-sm font-medium hover:bg-brand transition-colors"
-                  >
-                    Quick View <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
-                  </button>
-                </div>
-              </article>
-            </Reveal>
-          ))}
+                  <div className="p-7 md:p-10 flex flex-wrap items-end justify-between gap-6">
+                    <div>
+                      <div className="text-xs uppercase tracking-[0.2em] text-brand">Ages 1–16</div>
+                      <h3 className="mt-2 font-serif text-3xl md:text-4xl">{p.name}</h3>
+                      <p className="mt-2 text-muted-foreground max-w-md">{p.description}</p>
+                    </div>
+                    <button
+                      onClick={() => setActive(p)}
+                      className="group inline-flex items-center gap-2 rounded-full bg-foreground text-background px-5 py-3 text-sm font-medium hover:bg-brand transition-colors"
+                    >
+                      Quick View
+                    </button>
+                  </div>
+                </article>
+              </Reveal>
+            ))
+          )}
         </div>
       </section>
 
@@ -143,7 +169,7 @@ function Products() {
                   <div>· Flexible MOQ, Pan India delivery</div>
                 </div>
                 <a href="/contact" className="mt-8 inline-flex items-center gap-2 rounded-full bg-foreground text-background px-5 py-3 text-sm font-medium hover:bg-brand transition-colors">
-                  Request line sheet <ArrowRight size={14} />
+                  Request line sheet
                 </a>
               </div>
             </div>

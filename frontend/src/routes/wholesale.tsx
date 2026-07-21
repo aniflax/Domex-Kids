@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionHeading } from "@/components/site/SectionHeading";
-import { ArrowRight, Boxes, Truck, Warehouse, Handshake, Clock, Scale } from "lucide-react";
+import { Boxes, Truck, Warehouse, Handshake, Clock, Scale } from "lucide-react";
 import { images } from "@/lib/site-config";
 
 export const Route = createFileRoute("/wholesale")({
@@ -65,7 +65,7 @@ function Wholesale() {
             </p></Reveal>
             <Reveal delay={200}>
                 <Link to="/contact" className="mt-4 inline-flex items-center gap-2 rounded-full bg-foreground text-background px-6 py-3.5 text-sm font-medium hover:bg-brand transition-colors">
-                Become a dealer <ArrowRight size={16} />
+                Become a dealer
               </Link>
             </Reveal>
           </div>

@@ -25,7 +25,7 @@ export function Footer() {
         <div>
           <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Explore</div>
           <ul className="mt-5 space-y-3 text-sm">
-            <li><Link to="/products" className="link-underline">Products</Link></li>
+            <li><Link to="/products" search={{ category: "all" }} className="link-underline">Products</Link></li>
             <li><Link to="/wholesale" className="link-underline">Wholesale</Link></li>
             <li><Link to="/infrastructure" className="link-underline">Infrastructure</Link></li>
             <li><Link to="/founder" className="link-underline">Founder</Link></li>

@@ -1,6 +1,6 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Menu, X, ArrowRight } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { navLinks } from "@/lib/site-config";
 
 export function Navbar() {
@@ -104,7 +104,7 @@ export function Navbar() {
             onClick={() => setOpen(false)}
             className="btn-solid mt-10 w-full"
           >
-            Send Enquiry <ArrowRight className="h-4 w-4" />
+            Send Enquiry
           </Link>
         </aside>
       </div>

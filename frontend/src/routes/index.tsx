@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import {
-  ArrowRight,
   Check,
   ChevronDown,
   Clock,
@@ -9,9 +8,10 @@ import {
   Sparkles,
   Star,
   Truck,
+  X,
 } from "lucide-react";
 import { Reveal } from "@/components/site/Reveal";
-import { images, site } from "@/lib/site-config";
+import { images, products, site } from "@/lib/site-config";
 
 import heroImg from "../assets/hero.jpg";
 import shirtsImg from "../assets/shirts.jpg";
@@ -53,6 +53,15 @@ const whyChoose = [
   { icon: Check, title: "Bulk Manufacturing", body: "Flexible quantities for every retailer." },
   { icon: Check, title: "Trusted Since 2014", body: "A decade of consistent quality." },
 ];
+
+function localImg(slug: string) {
+  const map: Record<string, string> = {
+    "boys-shirts": shirtsImg,
+    "boys-t-shirts": tshirtsImg,
+    "boys-jeans": jeansImg,
+  };
+  return map[slug] || shirtsImg;
+}
 
 function useReveal() {
   useEffect(() => {
@@ -106,6 +115,8 @@ function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
 
 function Home() {
   useReveal();
+  const [quickView, setQuickView] = useState<null | (typeof products)[number]>(null);
+  const [video, setVideo] = useState<string | null>(null);
 
   return (
     <>
@@ -129,8 +140,8 @@ function Home() {
                 delivered nationwide.
               </p>
               <div className="mt-9 flex flex-wrap gap-3">
-                <Link to="/products" className="btn-solid">
-                  Explore Collection <ArrowRight className="h-4 w-4" />
+                <Link to="/products" search={{ category: "all" }} className="btn-solid">
+                  Explore Collection
                 </Link>
                 <Link to="/contact" className="btn-outline">
                   Become a Retail Partner
@@ -255,34 +266,35 @@ function Home() {
         </div>
         <div className="grid gap-6 md:grid-cols-3">
           {[
-            { img: shirtsImg, name: "Boys Shirts", desc: "Classic weaves, contemporary fits." },
-            { img: tshirtsImg, name: "Boys T-Shirts", desc: "Everyday cotton, elevated." },
-            { img: jeansImg, name: "Boys Jeans", desc: "Denim that moves with them." },
+            { img: shirtsImg, name: "Boys Shirts", slug: "shirts", desc: "Classic weaves, contemporary fits." },
+            { img: tshirtsImg, name: "Boys T-Shirts", slug: "t-shirts", desc: "Everyday cotton, elevated." },
+            { img: jeansImg, name: "Boys Jeans", slug: "jeans", desc: "Denim that moves with them." },
           ].map((p, i) => (
-            <article
+            <Link
               key={p.name}
-              className="reveal card-soft group overflow-hidden"
+              to="/products"
+              search={{ category: p.slug }}
+              className="reveal card-soft group overflow-hidden block"
               style={{ transitionDelay: `${i * 90}ms` }}
             >
-              <div className="aspect-[4/5] overflow-hidden bg-secondary">
-                <img
-                  src={p.img}
-                  alt={p.name}
-                  loading="lazy"
-                  className="h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105"
-                />
-              </div>
-              <div className="p-7">
-                <h3 className="font-serif text-2xl">{p.name}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">{p.desc}</p>
-                <Link
-                  to="/products"
-                  className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-brand link-underline"
-                >
-                  View Collection <ArrowRight className="h-4 w-4" />
-                </Link>
-              </div>
-            </article>
+              <article>
+                <div className="aspect-[4/5] overflow-hidden bg-secondary">
+                  <img
+                    src={p.img}
+                    alt={p.name}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105"
+                  />
+                </div>
+                <div className="p-7">
+                  <h3 className="font-serif text-2xl">{p.name}</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">{p.desc}</p>
+                  <span className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-brand link-underline">
+                    View Collection
+                  </span>
+                </div>
+              </article>
+            </Link>
           ))}
         </div>
 
@@ -299,12 +311,128 @@ function Home() {
         </div>
       </section>
 
+      {/* Handpicked Featured Products */}
+      <section className="bg-cream/50">
+        <div className="container-x mx-auto max-w-7xl py-24 lg:py-32">
+          <div className="reveal mb-14 flex flex-wrap items-end justify-between gap-4">
+            <div className="max-w-2xl">
+              <div className="text-xs tracking-[0.3em] text-brand uppercase">
+                Handpicked
+              </div>
+              <h2 className="mt-3 font-serif text-4xl leading-tight md:text-5xl">
+                Featured Products
+              </h2>
+            </div>
+            <Link to="/products" search={{ category: "all" }} className="btn-outline shrink-0">
+              View All
+            </Link>
+          </div>
+          <div className="grid gap-8 lg:grid-cols-3">
+            {[
+              { slug: "boys-shirts", price: "From ₹249" },
+              { slug: "boys-t-shirts", price: "From ₹179" },
+              { slug: "boys-jeans", price: "From ₹399" },
+            ].map((item, i) => {
+              const p = products.find((x) => x.slug === item.slug)!;
+              return (
+                <article
+                  key={p.slug}
+                  className="reveal group rounded-2xl border border-border bg-white p-6 transition-shadow duration-500 hover:shadow-xl"
+                  style={{ transitionDelay: `${i * 100}ms` }}
+                >
+                  <div className="aspect-[4/5] overflow-hidden rounded-xl bg-secondary">
+                    <img
+                      src={localImg(p.slug)}
+                      alt={p.name}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="mt-6">
+                    <div className="text-xs tracking-[0.2em] text-brand uppercase">
+                      {item.price}
+                    </div>
+                    <h3 className="mt-1 font-serif text-2xl">{p.name}</h3>
+                    <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
+                      {p.description}
+                    </p>
+                    <button
+                      onClick={() => setQuickView(p)}
+                      className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-brand link-underline cursor-pointer"
+                    >
+                      Shop Now
+                    </button>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Videos */}
+      <section className="container-x mx-auto max-w-7xl py-24 lg:py-32">
+        <div className="reveal mx-auto mb-14 max-w-2xl text-center">
+          <div className="text-xs tracking-[0.3em] text-brand uppercase">Featured Videos</div>
+          <h2 className="mt-3 font-serif text-4xl leading-tight md:text-5xl">See our collection in motion.</h2>
+        </div>
+        <div className="grid gap-8 md:grid-cols-2">
+          {[
+            { title: "Premium Kids Fashion Collection", videoId: "dQw4w9WgXcQ" },
+            { title: "Behind the Scenes — Manufacturing", videoId: "dQw4w9WgXcQ" },
+          ].map((v, i) => (
+            <button
+              key={v.title}
+              onClick={() => setVideo(v.videoId)}
+              className="reveal group relative aspect-video w-full overflow-hidden rounded-2xl border border-border bg-black text-left"
+              style={{ transitionDelay: `${i * 120}ms` }}
+            >
+              <img
+                src={`https://img.youtube.com/vi/${v.videoId}/maxresdefault.jpg`}
+                alt={v.title}
+                loading="lazy"
+                className="h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-foreground/20 transition-opacity duration-500 group-hover:bg-foreground/10" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-background/90 text-foreground shadow-lg transition-transform duration-500 group-hover:scale-110 md:h-20 md:w-20">
+                  <svg viewBox="0 0 24 24" fill="currentColor" className="ml-0.5 h-6 w-6 md:h-8 md:w-8">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </div>
+              </div>
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-foreground/80 to-transparent p-6 pt-12">
+                <h3 className="font-serif text-lg text-background md:text-xl">{v.title}</h3>
+              </div>
+            </button>
+          ))}
+        </div>
+      </section>
+
+      {/* Video modal */}
+      {video && (
+        <div className="fixed inset-0 z-[80] bg-foreground/80 backdrop-blur-sm flex items-center justify-center p-4 animate-[fade-in_0.3s_ease-out]" onClick={() => setVideo(null)}>
+          <div
+            className="w-full max-w-4xl aspect-video rounded-2xl overflow-hidden shadow-2xl animate-[fade-up_0.4s_ease-out]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <iframe
+              src={`https://www.youtube.com/embed/${video}?autoplay=1`}
+              title="YouTube video"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="h-full w-full"
+            />
+          </div>
+        </div>
+      )}
+
       {/* Facilities */}
       <section className="bg-cream">
         <div className="container-x mx-auto max-w-7xl py-24 lg:py-32">
           <div className="reveal mx-auto mb-14 max-w-2xl text-center">
             <div className="text-xs tracking-[0.3em] text-brand uppercase">Our Facilities</div>
-            <h2 className="mt-3 font-serif text-4xl leading-tight md:text-5xl">Manufacturing excellence, end to end.</h2>
+            <h2 className="mt-3 font-serif text-3xl leading-tight md:text-4xl">Manufacturing excellence, end to end.</h2>
           </div>
           <div className="grid gap-8 lg:grid-cols-2">
             <div className="reveal grid grid-cols-2 gap-4">
@@ -371,7 +499,7 @@ function Home() {
               <div className="reveal" style={{ transitionDelay: "220ms" }}>
                 <div className="mt-8 flex flex-wrap gap-3">
                   <Link to="/contact" className="inline-flex items-center gap-2 rounded-full bg-background text-foreground px-6 py-3.5 text-sm font-medium hover:bg-brand hover:text-white transition-colors">
-                    Contact Us <ArrowRight size={16} />
+                    Contact Us
                   </Link>
                   <Link to="/wholesale" className="inline-flex items-center gap-2 rounded-full border border-background/40 text-background px-6 py-3.5 text-sm font-medium hover:bg-background/10 transition">
                     Wholesale details
@@ -382,6 +510,45 @@ function Home() {
           </div>
         </div>
       </section>
+
+      {/* Quick view modal */}
+      {quickView && (
+        <div className="fixed inset-0 z-[70] bg-foreground/60 backdrop-blur-sm flex items-center justify-center p-4 animate-[fade-in_0.3s_ease-out]" onClick={() => setQuickView(null)}>
+          <div
+            className="bg-background rounded-3xl overflow-hidden max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl animate-[fade-up_0.4s_ease-out]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="grid md:grid-cols-2">
+              <div className="aspect-square md:aspect-auto">
+                <img src={localImg(quickView.slug)} alt={quickView.name} className="w-full h-full object-cover" />
+              </div>
+              <div className="p-8 md:p-10 relative">
+                <button aria-label="Close" onClick={() => setQuickView(null)} className="absolute top-5 right-5 p-2 rounded-full border hover:bg-secondary">
+                  <X size={16} />
+                </button>
+                <div className="text-xs uppercase tracking-[0.2em] text-brand">{quickView.tagline}</div>
+                <h3 className="mt-3 font-serif text-3xl md:text-4xl">{quickView.name}</h3>
+                <p className="mt-4 text-muted-foreground leading-relaxed">{quickView.description}</p>
+                <div className="mt-6 grid grid-cols-3 gap-2">
+                  {quickView.gallery.map((src, k) => (
+                    <div key={k} className="aspect-square rounded-xl overflow-hidden bg-secondary">
+                      <img src={src} alt="" className="w-full h-full object-cover" />
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-6 text-sm text-muted-foreground">
+                  <div>· Ages 1–16 years</div>
+                  <div>· Wholesale only — pricing on inquiry</div>
+                  <div>· Flexible MOQ, Pan India delivery</div>
+                </div>
+                <a href="/contact" className="mt-8 inline-flex items-center gap-2 rounded-full bg-foreground text-background px-5 py-3 text-sm font-medium hover:bg-brand transition-colors">
+                  Request line sheet
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

@@ -16,7 +16,7 @@ export const site = {
   hours: "Tuesday – Sunday · 9:00 AM – 6:00 PM (Monday Closed)",
   social: {
     instagram: "https://instagram.com/",
-    youtube: "https://youtube.com/",
+    youtube: "https://www.youtube.com/@DomexKids/featured",
   },
   // REPLACE: Google Maps embed URL (centered on Gandhi Nagar, Delhi)
   mapEmbedUrl:
@@ -54,10 +54,18 @@ export const images = {
   editorial3: "https://images.unsplash.com/photo-1519689680058-324335c77eba?auto=format&fit=crop&w=1200&q=80",
 };
 
+export const categories = [
+  { slug: "all", name: "All" },
+  { slug: "shirts", name: "Shirts" },
+  { slug: "t-shirts", name: "T-Shirts" },
+  { slug: "jeans", name: "Jeans" },
+] as const;
+
 export const products = [
   {
     slug: "boys-shirts",
     name: "Boys Shirts",
+    category: "shirts",
     tagline: "Crisp cottons, modern cuts",
     image: "https://images.unsplash.com/photo-1519689680058-324335c77eba?auto=format&fit=crop&w=1200&q=80",
     gallery: [
@@ -70,6 +78,7 @@ export const products = [
   {
     slug: "boys-t-shirts",
     name: "Boys T-Shirts",
+    category: "t-shirts",
     tagline: "Soft knits, everyday ease",
     image: "https://images.unsplash.com/photo-1503944168849-8bf86651b1d7?auto=format&fit=crop&w=1200&q=80",
     gallery: [
@@ -82,6 +91,7 @@ export const products = [
   {
     slug: "boys-jeans",
     name: "Boys Jeans",
+    category: "jeans",
     tagline: "Denim built for play",
     image: "https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=1200&q=80",
     gallery: [

@@ -15,6 +15,7 @@ import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { WhatsAppButton } from "@/components/site/WhatsAppButton";
 import { BackToTop } from "@/components/site/BackToTop";
+import { SocialBar } from "@/components/site/SocialBar";
 
 function NotFoundComponent() {
   return (
@@ -134,6 +135,7 @@ function RootComponent() {
         <Outlet />
       </main>
       <Footer />
+      <SocialBar />
       <WhatsAppButton />
       <BackToTop />
     </QueryClientProvider>
