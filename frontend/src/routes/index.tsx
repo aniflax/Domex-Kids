@@ -1,32 +1,29 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import {
-  Check,
-  ChevronDown,
-  Clock,
-  MapPin,
-  Sparkles,
-  Star,
-  Truck,
-  X,
-} from "lucide-react";
+import { Check, ChevronDown, Clock, MapPin, Sparkles, Star, Truck, X } from "lucide-react";
 import { Reveal } from "@/components/site/Reveal";
-import { images, products, site } from "@/lib/site-config";
+import { images } from "@/lib/site-config";
+import { useHomeCategories, useHomeProducts, useVideos } from "@/lib/strapi";
+import type { Product } from "@/lib/strapi-types";
 
 import heroImg from "../assets/hero.jpg";
-import shirtsImg from "../assets/shirts.jpg";
-import tshirtsImg from "../assets/tshirts.jpg";
-import jeansImg from "../assets/jeans.jpg";
 import facilityImg from "../assets/facility.jpg";
-import founderImg from "../assets/founder.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "DOMEX KIDS — Premium Wholesale Kids Wear Manufacturer" },
-      { name: "description", content: "Premium kids wear manufacturer delivering trendy, comfortable and affordable garments to retailers across India since 2014." },
+      {
+        name: "description",
+        content:
+          "Premium kids wear manufacturer delivering trendy, comfortable and affordable garments to retailers across India since 2014.",
+      },
       { property: "og:title", content: "DOMEX KIDS — Premium Wholesale Kids Wear" },
-      { property: "og:description", content: "Style that grows with every childhood. Wholesale kids garments from Delhi's Gandhi Nagar." },
+      {
+        property: "og:description",
+        content:
+          "Style that grows with every childhood. Wholesale kids garments from Delhi's Gandhi Nagar.",
+      },
       { property: "og:image", content: images.hero },
       { property: "og:url", content: "/" },
     ],
@@ -44,7 +41,11 @@ const trust = [
 ] as const;
 
 const whyChoose = [
-  { icon: Sparkles, title: "Latest Fashion Designs", body: "Trend-led collections refreshed each season." },
+  {
+    icon: Sparkles,
+    title: "Latest Fashion Designs",
+    body: "Trend-led collections refreshed each season.",
+  },
   { icon: Check, title: "Premium Fabrics", body: "Soft, breathable, and built to last." },
   { icon: Check, title: "Affordable Wholesale Pricing", body: "Direct-from-manufacturer margins." },
   { icon: Truck, title: "Pan India Delivery", body: "Trusted transport partners nationwide." },
@@ -53,15 +54,6 @@ const whyChoose = [
   { icon: Check, title: "Bulk Manufacturing", body: "Flexible quantities for every retailer." },
   { icon: Check, title: "Trusted Since 2014", body: "A decade of consistent quality." },
 ];
-
-function localImg(slug: string) {
-  const map: Record<string, string> = {
-    "boys-shirts": shirtsImg,
-    "boys-t-shirts": tshirtsImg,
-    "boys-jeans": jeansImg,
-  };
-  return map[slug] || shirtsImg;
-}
 
 function useReveal() {
   useEffect(() => {
@@ -88,10 +80,9 @@ function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const io = new IntersectionObserver(
-      ([e]) => e.isIntersecting && setActive(true),
-      { threshold: 0.3 },
-    );
+    const io = new IntersectionObserver(([e]) => e.isIntersecting && setActive(true), {
+      threshold: 0.3,
+    });
     io.observe(el);
     return () => io.disconnect();
   }, []);
@@ -110,13 +101,22 @@ function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
   }, [to, active]);
-  return <span ref={ref}>{val}{suffix}</span>;
+  return (
+    <span ref={ref}>
+      {val}
+      {suffix}
+    </span>
+  );
 }
 
 function Home() {
   useReveal();
-  const [quickView, setQuickView] = useState<null | (typeof products)[number]>(null);
+  const [quickView, setQuickView] = useState<Product | null>(null);
+  const [selectedImage, setSelectedImage] = useState(0);
   const [video, setVideo] = useState<string | null>(null);
+  const { data: homeCategories = [] } = useHomeCategories();
+  const { data: homeProducts = [] } = useHomeProducts();
+  const { data: videos = [] } = useVideos();
 
   return (
     <>
@@ -130,14 +130,11 @@ function Home() {
               </div>
               <h1 className="font-serif text-[2.5rem] leading-[1.05] tracking-tight text-foreground sm:text-5xl lg:text-[4rem]">
                 Premium Kids Fashion
-                <span className="block italic text-brand">
-                  for Retailers Across India
-                </span>
+                <span className="block italic text-brand">for Retailers Across India</span>
               </h1>
               <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground md:text-lg">
-                Trusted wholesale manufacturer delivering trendy boys' shirts,
-                t-shirts and jeans for ages 1–16 years. Crafted in Delhi,
-                delivered nationwide.
+                Trusted wholesale manufacturer delivering trendy boys' shirts, t-shirts and jeans
+                for ages 1–16 years. Crafted in Delhi, delivered nationwide.
               </p>
               <div className="mt-9 flex flex-wrap gap-3">
                 <Link to="/products" search={{ category: "all" }} className="btn-solid">
@@ -161,9 +158,7 @@ function Home() {
               <div className="animate-floaty absolute -left-6 -top-6 hidden h-24 w-24 rounded-full border border-brand/30 md:block" />
               <div className="animate-floaty absolute -bottom-8 -right-4 hidden h-32 w-32 rounded-3xl border border-brand/20 bg-white/40 backdrop-blur-sm md:block" />
               <div className="absolute -bottom-6 left-6 hidden max-w-[220px] rounded-2xl border border-border bg-white/90 p-4 shadow-lg backdrop-blur md:block">
-                <div className="text-xs tracking-widest text-brand uppercase">
-                  Trusted by
-                </div>
+                <div className="text-xs tracking-widest text-brand uppercase">Trusted by</div>
                 <div className="mt-1 font-serif text-xl">500+ Retailers</div>
                 <div className="text-xs text-muted-foreground">across India</div>
               </div>
@@ -194,9 +189,7 @@ function Home() {
       {/* About */}
       <section className="container-x mx-auto max-w-7xl py-24 lg:py-32">
         <div className="reveal mx-auto mb-14 max-w-2xl text-center">
-          <div className="text-xs tracking-[0.3em] text-brand uppercase">
-            Our Story
-          </div>
+          <div className="text-xs tracking-[0.3em] text-brand uppercase">Our Story</div>
           <h2 className="mt-3 font-serif text-4xl leading-tight md:text-5xl">
             Crafted in Delhi. Worn across India.
           </h2>
@@ -213,23 +206,19 @@ function Home() {
             </div>
             <div className="absolute -right-4 -top-4 hidden rounded-2xl border border-border bg-white p-5 shadow-lg md:block">
               <div className="font-serif text-3xl text-brand">2014</div>
-              <div className="text-xs tracking-widest text-muted-foreground uppercase">
-                Founded
-              </div>
+              <div className="text-xs tracking-widest text-muted-foreground uppercase">Founded</div>
             </div>
           </div>
           <div className="reveal">
             <p className="text-lg leading-relaxed text-foreground/85">
-              DOMEX KIDS is one of Delhi's trusted wholesale manufacturers of
-              premium kids garments. Established in 2014, we have grown into a
-              reliable name among retailers across India by consistently
-              delivering fashionable, high-quality children's clothing at
+              DOMEX KIDS is one of Delhi's trusted wholesale manufacturers of premium kids garments.
+              Established in 2014, we have grown into a reliable name among retailers across India
+              by consistently delivering fashionable, high-quality children's clothing at
               competitive wholesale prices.
             </p>
             <p className="mt-5 leading-relaxed text-muted-foreground">
-              Based in the renowned garment hub of Gandhi Nagar, Delhi, we
-              specialize in stylish clothing for boys aged 1 to 16 years —
-              trendy, durable, comfortable, and affordable.
+              Based in the renowned garment hub of Gandhi Nagar, Delhi, we specialize in stylish
+              clothing for boys aged 1 to 16 years — trendy, durable, comfortable, and affordable.
             </p>
 
             <ol className="mt-10 space-y-6 border-l border-border pl-6">
@@ -242,9 +231,7 @@ function Home() {
               ].map(([year, title, desc]) => (
                 <li key={title} className="relative">
                   <span className="absolute -left-[29px] top-1.5 h-2.5 w-2.5 rounded-full border-2 border-brand bg-background" />
-                  <div className="text-xs tracking-[0.25em] text-brand uppercase">
-                    {year}
-                  </div>
+                  <div className="text-xs tracking-[0.25em] text-brand uppercase">{year}</div>
                   <div className="font-serif text-xl">{title}</div>
                   <div className="text-sm text-muted-foreground">{desc}</div>
                 </li>
@@ -257,38 +244,34 @@ function Home() {
       {/* Products / Collection */}
       <section className="container-x mx-auto max-w-7xl pb-24 lg:pb-32">
         <div className="reveal mx-auto mb-14 max-w-2xl text-center">
-          <div className="text-xs tracking-[0.3em] text-brand uppercase">
-            The Collection
-          </div>
+          <div className="text-xs tracking-[0.3em] text-brand uppercase">The Collection</div>
           <h2 className="mt-3 font-serif text-4xl leading-tight md:text-5xl">
             Fashion built for every age.
           </h2>
         </div>
         <div className="grid gap-6 md:grid-cols-3">
-          {[
-            { img: shirtsImg, name: "Boys Shirts", slug: "shirts", desc: "Classic weaves, contemporary fits." },
-            { img: tshirtsImg, name: "Boys T-Shirts", slug: "t-shirts", desc: "Everyday cotton, elevated." },
-            { img: jeansImg, name: "Boys Jeans", slug: "jeans", desc: "Denim that moves with them." },
-          ].map((p, i) => (
+          {homeCategories.map((cat, i) => (
             <Link
-              key={p.name}
+              key={cat.id}
               to="/products"
-              search={{ category: p.slug }}
+              search={{ category: cat.id }}
               className="reveal card-soft group overflow-hidden block"
               style={{ transitionDelay: `${i * 90}ms` }}
             >
               <article>
                 <div className="aspect-[4/5] overflow-hidden bg-secondary">
                   <img
-                    src={p.img}
-                    alt={p.name}
+                    src={cat.image || heroImg}
+                    alt={cat.name}
                     loading="lazy"
                     className="h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105"
                   />
                 </div>
                 <div className="p-7">
-                  <h3 className="font-serif text-2xl">{p.name}</h3>
-                  <p className="mt-1 text-sm text-muted-foreground">{p.desc}</p>
+                  <h3 className="font-serif text-2xl">{cat.name}</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {cat.description || "Explore our collection."}
+                  </p>
                   <span className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-brand link-underline">
                     View Collection
                   </span>
@@ -300,9 +283,7 @@ function Home() {
 
         <div className="reveal mt-14 flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-border bg-white p-8">
           <div>
-            <div className="text-xs tracking-[0.25em] text-brand uppercase">
-              Age Groups
-            </div>
+            <div className="text-xs tracking-[0.25em] text-brand uppercase">Age Groups</div>
             <div className="mt-2 font-serif text-2xl">1–4 · 5–8 · 9–12 · 13–16 Years</div>
           </div>
           <Link to="/contact" className="btn-outline">
@@ -316,56 +297,48 @@ function Home() {
         <div className="container-x mx-auto max-w-7xl py-24 lg:py-32">
           <div className="reveal mb-14 flex flex-wrap items-end justify-between gap-4">
             <div className="max-w-2xl">
-              <div className="text-xs tracking-[0.3em] text-brand uppercase">
-                Handpicked
-              </div>
+              <div className="text-xs tracking-[0.3em] text-brand uppercase">Handpicked</div>
               <h2 className="mt-3 font-serif text-4xl leading-tight md:text-5xl">
                 Featured Products
               </h2>
             </div>
-            <Link to="/products" search={{ category: "all" }} className="btn-outline shrink-0">
+            <Link to="/products" search={{ category: 0 }} className="btn-outline shrink-0">
               View All
             </Link>
           </div>
           <div className="grid gap-8 lg:grid-cols-3">
-            {[
-              { slug: "boys-shirts", price: "From ₹249" },
-              { slug: "boys-t-shirts", price: "From ₹179" },
-              { slug: "boys-jeans", price: "From ₹399" },
-            ].map((item, i) => {
-              const p = products.find((x) => x.slug === item.slug)!;
-              return (
-                <article
-                  key={p.slug}
-                  className="reveal group rounded-2xl border border-border bg-white p-6 transition-shadow duration-500 hover:shadow-xl"
-                  style={{ transitionDelay: `${i * 100}ms` }}
-                >
-                  <div className="aspect-[4/5] overflow-hidden rounded-xl bg-secondary">
-                    <img
-                      src={localImg(p.slug)}
-                      alt={p.name}
-                      loading="lazy"
-                      className="h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105"
-                    />
+            {homeProducts.map((p, i) => (
+              <article
+                key={p.id}
+                className="reveal group rounded-2xl border border-border bg-white p-6 transition-shadow duration-500 hover:shadow-xl"
+                style={{ transitionDelay: `${i * 100}ms` }}
+              >
+                <div className="aspect-[4/5] overflow-hidden rounded-xl bg-secondary">
+                  <img
+                    src={p.image}
+                    alt={p.name}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105"
+                  />
+                </div>
+                <div className="mt-6">
+                  <div className="text-xs tracking-[0.2em] text-brand uppercase">
+                    {p.price ? `From ₹${p.price}` : "Ages 1–16"}
                   </div>
-                  <div className="mt-6">
-                    <div className="text-xs tracking-[0.2em] text-brand uppercase">
-                      {item.price}
-                    </div>
-                    <h3 className="mt-1 font-serif text-2xl">{p.name}</h3>
-                    <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-                      {p.description}
-                    </p>
-                    <button
-                      onClick={() => setQuickView(p)}
-                      className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-brand link-underline cursor-pointer"
-                    >
-                      Shop Now
-                    </button>
-                  </div>
-                </article>
-              );
-            })}
+                  <h3 className="mt-1 font-serif text-2xl">{p.name}</h3>
+                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{p.subText}</p>
+                  <button
+                    onClick={() => {
+                      setQuickView(p);
+                      setSelectedImage(0);
+                    }}
+                    className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-brand link-underline cursor-pointer"
+                  >
+                    Shop Now
+                  </button>
+                </div>
+              </article>
+            ))}
           </div>
         </div>
       </section>
@@ -374,13 +347,12 @@ function Home() {
       <section className="container-x mx-auto max-w-7xl py-24 lg:py-32">
         <div className="reveal mx-auto mb-14 max-w-2xl text-center">
           <div className="text-xs tracking-[0.3em] text-brand uppercase">Featured Videos</div>
-          <h2 className="mt-3 font-serif text-4xl leading-tight md:text-5xl">See our collection in motion.</h2>
+          <h2 className="mt-3 font-serif text-4xl leading-tight md:text-5xl">
+            See our collection in motion.
+          </h2>
         </div>
         <div className="grid gap-8 md:grid-cols-2">
-          {[
-            { title: "Premium Kids Fashion Collection", videoId: "dQw4w9WgXcQ" },
-            { title: "Behind the Scenes — Manufacturing", videoId: "dQw4w9WgXcQ" },
-          ].map((v, i) => (
+          {videos.map((v, i) => (
             <button
               key={v.title}
               onClick={() => setVideo(v.videoId)}
@@ -396,7 +368,11 @@ function Home() {
               <div className="absolute inset-0 bg-foreground/20 transition-opacity duration-500 group-hover:bg-foreground/10" />
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="flex h-16 w-16 items-center justify-center rounded-full bg-background/90 text-foreground shadow-lg transition-transform duration-500 group-hover:scale-110 md:h-20 md:w-20">
-                  <svg viewBox="0 0 24 24" fill="currentColor" className="ml-0.5 h-6 w-6 md:h-8 md:w-8">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="ml-0.5 h-6 w-6 md:h-8 md:w-8"
+                  >
                     <path d="M8 5v14l11-7z" />
                   </svg>
                 </div>
@@ -411,7 +387,10 @@ function Home() {
 
       {/* Video modal */}
       {video && (
-        <div className="fixed inset-0 z-[80] bg-foreground/80 backdrop-blur-sm flex items-center justify-center p-4 animate-[fade-in_0.3s_ease-out]" onClick={() => setVideo(null)}>
+        <div
+          className="fixed inset-0 z-[80] bg-foreground/80 backdrop-blur-sm flex items-center justify-center p-4 animate-[fade-in_0.3s_ease-out]"
+          onClick={() => setVideo(null)}
+        >
           <div
             className="w-full max-w-4xl aspect-video rounded-2xl overflow-hidden shadow-2xl animate-[fade-up_0.4s_ease-out]"
             onClick={(e) => e.stopPropagation()}
@@ -432,7 +411,9 @@ function Home() {
         <div className="container-x mx-auto max-w-7xl py-24 lg:py-32">
           <div className="reveal mx-auto mb-14 max-w-2xl text-center">
             <div className="text-xs tracking-[0.3em] text-brand uppercase">Our Facilities</div>
-            <h2 className="mt-3 font-serif text-3xl leading-tight md:text-4xl">Manufacturing excellence, end to end.</h2>
+            <h2 className="mt-3 font-serif text-3xl leading-tight md:text-4xl">
+              Manufacturing excellence, end to end.
+            </h2>
           </div>
           <div className="grid gap-8 lg:grid-cols-2">
             <div className="reveal grid grid-cols-2 gap-4">
@@ -455,8 +436,13 @@ function Home() {
               <h3 className="mt-2 font-serif text-3xl">How an order flows</h3>
               <ol className="mt-8 space-y-5">
                 {[
-                  "Enquiry", "Order Confirmation", "Manufacturing",
-                  "Quality Check", "Packaging", "Dispatch", "Doorstep Delivery",
+                  "Enquiry",
+                  "Order Confirmation",
+                  "Manufacturing",
+                  "Quality Check",
+                  "Packaging",
+                  "Dispatch",
+                  "Doorstep Delivery",
                 ].map((step, i) => (
                   <li key={step} className="flex items-center gap-4">
                     <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-brand font-serif text-sm text-brand">
@@ -482,7 +468,11 @@ function Home() {
       <section className="mt-28 md:mt-40">
         <div className="container-x">
           <div className="rounded-3xl overflow-hidden relative">
-            <img src={images.wholesale} alt="" className="absolute inset-0 w-full h-full object-cover" />
+            <img
+              src={images.wholesale}
+              alt=""
+              className="absolute inset-0 w-full h-full object-cover"
+            />
             <div className="absolute inset-0 bg-foreground/60" />
             <div className="relative p-10 md:p-20 text-background">
               <div className="reveal">
@@ -498,10 +488,16 @@ function Home() {
               </div>
               <div className="reveal" style={{ transitionDelay: "220ms" }}>
                 <div className="mt-8 flex flex-wrap gap-3">
-                  <Link to="/contact" className="inline-flex items-center gap-2 rounded-full bg-background text-foreground px-6 py-3.5 text-sm font-medium hover:bg-brand hover:text-white transition-colors">
+                  <Link
+                    to="/contact"
+                    className="inline-flex items-center gap-2 rounded-full bg-background text-foreground px-6 py-3.5 text-sm font-medium hover:bg-brand hover:text-white transition-colors"
+                  >
                     Contact Us
                   </Link>
-                  <Link to="/wholesale" className="inline-flex items-center gap-2 rounded-full border border-background/40 text-background px-6 py-3.5 text-sm font-medium hover:bg-background/10 transition">
+                  <Link
+                    to="/wholesale"
+                    className="inline-flex items-center gap-2 rounded-full border border-background/40 text-background px-6 py-3.5 text-sm font-medium hover:bg-background/10 transition"
+                  >
                     Wholesale details
                   </Link>
                 </div>
@@ -513,35 +509,67 @@ function Home() {
 
       {/* Quick view modal */}
       {quickView && (
-        <div className="fixed inset-0 z-[70] bg-foreground/60 backdrop-blur-sm flex items-center justify-center p-4 animate-[fade-in_0.3s_ease-out]" onClick={() => setQuickView(null)}>
+        <div
+          className="fixed inset-0 z-[70] bg-foreground/60 backdrop-blur-sm flex items-center justify-center p-4 animate-[fade-in_0.3s_ease-out]"
+          onClick={() => {
+            setQuickView(null);
+            setSelectedImage(0);
+          }}
+        >
           <div
             className="bg-background rounded-3xl overflow-hidden max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl animate-[fade-up_0.4s_ease-out]"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="grid md:grid-cols-2">
               <div className="aspect-square md:aspect-auto">
-                <img src={localImg(quickView.slug)} alt={quickView.name} className="w-full h-full object-cover" />
+                <img
+                  src={quickView.gallery[selectedImage] || quickView.image}
+                  alt={quickView.name}
+                  className="w-full h-full object-cover transition-opacity duration-300"
+                />
               </div>
               <div className="p-8 md:p-10 relative">
-                <button aria-label="Close" onClick={() => setQuickView(null)} className="absolute top-5 right-5 p-2 rounded-full border hover:bg-secondary">
+                <button
+                  aria-label="Close"
+                  onClick={() => {
+                    setQuickView(null);
+                    setSelectedImage(0);
+                  }}
+                  className="absolute top-5 right-5 p-2 rounded-full border hover:bg-secondary"
+                >
                   <X size={16} />
                 </button>
-                <div className="text-xs uppercase tracking-[0.2em] text-brand">{quickView.tagline}</div>
+                <div className="text-xs uppercase tracking-[0.2em] text-brand">
+                  {quickView.tagline || "Premium Quality"}
+                </div>
                 <h3 className="mt-3 font-serif text-3xl md:text-4xl">{quickView.name}</h3>
-                <p className="mt-4 text-muted-foreground leading-relaxed">{quickView.description}</p>
-                <div className="mt-6 grid grid-cols-3 gap-2">
-                  {quickView.gallery.map((src, k) => (
-                    <div key={k} className="aspect-square rounded-xl overflow-hidden bg-secondary">
-                      <img src={src} alt="" className="w-full h-full object-cover" />
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-6 text-sm text-muted-foreground">
-                  <div>· Ages 1–16 years</div>
-                  <div>· Wholesale only — pricing on inquiry</div>
-                  <div>· Flexible MOQ, Pan India delivery</div>
-                </div>
-                <a href="/contact" className="mt-8 inline-flex items-center gap-2 rounded-full bg-foreground text-background px-5 py-3 text-sm font-medium hover:bg-brand transition-colors">
+                <p className="mt-4 text-muted-foreground leading-relaxed">{quickView.subText}</p>
+                {quickView.gallery.length > 0 && (
+                  <div className="mt-6 grid grid-cols-3 gap-2">
+                    {quickView.gallery.map((src, k) => (
+                      <button
+                        key={k}
+                        onClick={() => setSelectedImage(k)}
+                        className={`aspect-square rounded-xl overflow-hidden bg-secondary transition-all duration-200 ${
+                          selectedImage === k
+                            ? "ring-2 ring-brand ring-offset-2"
+                            : "opacity-70 hover:opacity-100"
+                        }`}
+                      >
+                        <img src={src} alt="" className="w-full h-full object-cover" />
+                      </button>
+                    ))}
+                  </div>
+                )}
+                {quickView.description && (
+                  <div className="mt-6 text-sm text-muted-foreground whitespace-pre-line">
+                    {quickView.description}
+                  </div>
+                )}
+                <a
+                  href="/contact"
+                  className="mt-8 inline-flex items-center gap-2 rounded-full bg-foreground text-background px-5 py-3 text-sm font-medium hover:bg-brand transition-colors"
+                >
                   Request line sheet
                 </a>
               </div>
@@ -555,10 +583,26 @@ function Home() {
 
 function Testimonials() {
   const items = [
-    { q: "The quality and consistency has helped us grow our kids section every season.", a: "R. Sharma", r: "Retailer, Jaipur" },
-    { q: "On-time dispatch, fair pricing, and designs our customers love.", a: "A. Verma", r: "Retailer, Lucknow" },
-    { q: "A partnership we've trusted for years. Highly professional team.", a: "S. Menon", r: "Distributor, Kochi" },
-    { q: "Fabrics feel premium and the fits are spot on for kids.", a: "P. Singh", r: "Retailer, Amritsar" },
+    {
+      q: "The quality and consistency has helped us grow our kids section every season.",
+      a: "R. Sharma",
+      r: "Retailer, Jaipur",
+    },
+    {
+      q: "On-time dispatch, fair pricing, and designs our customers love.",
+      a: "A. Verma",
+      r: "Retailer, Lucknow",
+    },
+    {
+      q: "A partnership we've trusted for years. Highly professional team.",
+      a: "S. Menon",
+      r: "Distributor, Kochi",
+    },
+    {
+      q: "Fabrics feel premium and the fits are spot on for kids.",
+      a: "P. Singh",
+      r: "Retailer, Amritsar",
+    },
   ];
   const [i, setI] = useState(0);
   useEffect(() => {
@@ -570,7 +614,9 @@ function Testimonials() {
     <section className="container-x mx-auto max-w-7xl py-24 lg:py-32">
       <div className="reveal mx-auto mb-14 max-w-2xl text-center">
         <div className="text-xs tracking-[0.3em] text-brand uppercase">Retail Partners</div>
-        <h2 className="mt-3 font-serif text-4xl leading-tight md:text-5xl">Trusted by retailers nationwide.</h2>
+        <h2 className="mt-3 font-serif text-4xl leading-tight md:text-5xl">
+          Trusted by retailers nationwide.
+        </h2>
       </div>
       <div className="reveal mx-auto max-w-4xl">
         <div className="relative overflow-hidden rounded-[2rem] border border-border bg-white p-10 md:p-14">
@@ -618,10 +664,22 @@ function Testimonials() {
 
 function FAQ() {
   const faqs = [
-    { q: "What products do you manufacture?", a: "Shirts, T-shirts, jeans and full seasonal collections for boys aged 1–16 years." },
-    { q: "Do you accept bulk orders?", a: "Yes. Bulk manufacturing and wholesale supply is our core business, with flexible quantity options." },
-    { q: "What is your delivery network?", a: "Pan India delivery through partnerships with leading transport companies." },
-    { q: "What age groups do you manufacture?", a: "We manufacture garments for children aged 1 to 16 years." },
+    {
+      q: "What products do you manufacture?",
+      a: "Shirts, T-shirts, jeans and full seasonal collections for boys aged 1–16 years.",
+    },
+    {
+      q: "Do you accept bulk orders?",
+      a: "Yes. Bulk manufacturing and wholesale supply is our core business, with flexible quantity options.",
+    },
+    {
+      q: "What is your delivery network?",
+      a: "Pan India delivery through partnerships with leading transport companies.",
+    },
+    {
+      q: "What age groups do you manufacture?",
+      a: "We manufacture garments for children aged 1 to 16 years.",
+    },
     { q: "Where are you located?", a: "9/7075, Guru Nanak Gali, Gandhi Nagar, Delhi – 110031." },
   ];
   const [open, setOpen] = useState<number | null>(0);
@@ -629,7 +687,9 @@ function FAQ() {
     <section className="container-x mx-auto max-w-7xl py-24 lg:py-32">
       <div className="reveal mx-auto mb-14 max-w-2xl text-center">
         <div className="text-xs tracking-[0.3em] text-brand uppercase">Frequently Asked</div>
-        <h2 className="mt-3 font-serif text-4xl leading-tight md:text-5xl">Everything you need to know.</h2>
+        <h2 className="mt-3 font-serif text-4xl leading-tight md:text-5xl">
+          Everything you need to know.
+        </h2>
       </div>
       <div className="mx-auto max-w-3xl">
         <div className="divide-y divide-border rounded-2xl border border-border bg-white">
