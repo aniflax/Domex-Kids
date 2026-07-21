@@ -2,7 +2,9 @@ export default [
   {
     method: 'GET',
     path: '/health',
-    handler: 'health-check.index',
+    handler: (ctx: any) => {
+      ctx.body = 'ok';
+    },
     config: {
       auth: false,
     },
