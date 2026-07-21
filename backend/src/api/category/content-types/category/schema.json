@@ -27,6 +27,13 @@
       "type": "media",
       "multiple": false,
       "required": false
+    },
+    "products": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product.product",
+      "mappedBy": "category",
+      "visible": false
     }
   }
 }

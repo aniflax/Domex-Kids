@@ -33,7 +33,8 @@
     "category": {
       "type": "relation",
       "relation": "manyToOne",
-      "target": "api::category.category"
+      "target": "api::category.category",
+      "inversedBy": "products"
     },
     "price": {
       "type": "decimal"
