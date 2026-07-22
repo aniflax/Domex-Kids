@@ -20,7 +20,7 @@ export default factories.createCoreController('api::product.product', ({ strapi 
 
     const categoriesByProductDocumentId = new Map(
       draftProducts
-        .filter((product) => product.category?.publishedAt)
+        .filter((product) => product.category)
         .map((product) => [product.documentId, product.category]),
     );
 
