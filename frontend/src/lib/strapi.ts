@@ -21,11 +21,7 @@ export async function fetchStrapi<T>(endpoint: string): Promise<T> {
 }
 
 function mediaUrl(media: { url: string; formats?: Record<string, { url: string }> }): string {
-  let url = media.formats?.medium?.url || media.formats?.small?.url || media.url;
-  url = url.replace(
-    "https://7429f0c7b407b1d7acb237af144dcc67.r2.cloudflarestorage.com",
-    "https://pub-0de6857b497142ab923e109463ce4e64.r2.dev",
-  );
+  const url = media.formats?.medium?.url || media.formats?.small?.url || media.url;
   if (url.startsWith("http")) return url;
   return `${STRAPI_URL}${url}`;
 }

@@ -24,6 +24,8 @@ services:
         sync: false
       - key: R2_BUCKET_NAME
         sync: false
+      - key: R2_PUBLIC_URL
+        sync: false
       - key: APP_KEYS
         sync: false
       - key: API_TOKEN_SALT
