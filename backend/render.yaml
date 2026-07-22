@@ -16,6 +16,8 @@ services:
         value: "true"
       - key: DATABASE_URL
         sync: false
+      - key: CORS_ORIGIN
+        sync: false
       - key: R2_ENDPOINT
         sync: false
       - key: R2_ACCESS_KEY_ID
