@@ -1,4 +1,0 @@
-name = "domex-kids"
-compatibility_date = "2025-07-22"
-compatibility_flags = ["nodejs_compat"]
-pages_build_output_dir = "dist"
