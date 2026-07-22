@@ -10,6 +10,14 @@ import type {
 
 const STRAPI_URL = import.meta.env.VITE_STRAPI_URL;
 
+function strapiUrl(path: string, params: Record<string, string>): string {
+  const url = new URL(`${STRAPI_URL}/api${path}`);
+  for (const [k, v] of Object.entries(params)) {
+    url.searchParams.append(k, v);
+  }
+  return url.toString();
+}
+
 export async function fetchStrapi<T>(endpoint: string): Promise<T> {
   const res = await fetch(`${STRAPI_URL}/api${endpoint}`);
   if (!res.ok) throw new Error(`Strapi API error: ${res.status}`);
@@ -78,17 +86,28 @@ export async function fetchHomeCategories(): Promise<Category[]> {
 }
 
 export async function fetchHomeProducts(): Promise<Product[]> {
-  const res = await fetchStrapi<{ data: StrapiProduct[] }>(
-    "/products?filters[showOnHomepage][$eq]=true&populate[0]=category&populate[1]=photos",
+  const res = await fetch(
+    strapiUrl("/products", {
+      "filters[showOnHomepage][$eq]": "true",
+      "populate[0]": "category",
+      "populate[1]": "photos",
+    }),
   );
-  return res.data.map(mapProduct);
+  if (!res.ok) throw new Error(`Strapi API error: ${res.status}`);
+  const json: { data: StrapiProduct[] } = await res.json();
+  return json.data.map(mapProduct);
 }
 
 export async function fetchAllProducts(): Promise<Product[]> {
-  const res = await fetchStrapi<{ data: StrapiProduct[] }>(
-    "/products?populate[0]=category&populate[1]=photos",
+  const res = await fetch(
+    strapiUrl("/products", {
+      "populate[0]": "category",
+      "populate[1]": "photos",
+    }),
   );
-  return res.data.map(mapProduct);
+  if (!res.ok) throw new Error(`Strapi API error: ${res.status}`);
+  const json: { data: StrapiProduct[] } = await res.json();
+  return json.data.map(mapProduct);
 }
 
 export async function fetchAllCategories(): Promise<Category[]> {
