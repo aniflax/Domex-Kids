@@ -46,7 +46,7 @@ const config = ({ env }: Core.Config.Shared.ConfigParams): Core.Config.Plugin =>
             Bucket: env('R2_BUCKET_NAME'),
           },
           forcePathStyle: true,
-          cdn: env('R2_PUBLIC_URL'),
+          cdn: env('CDN_URL'),
         },
       },
       actionOptions: {
