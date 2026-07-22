@@ -143,7 +143,7 @@ function Home() {
                 for ages 1–16 years. Crafted in Delhi, delivered nationwide.
               </p>
               <div className="mt-9 flex flex-wrap gap-3">
-                <Link to="/products" search={{ category: 0 }} className="btn-solid">
+                <Link to="/products" search={{ category: "" }} className="btn-solid">
                   Explore Collection
                 </Link>
                 <Link to="/contact" className="btn-outline">
@@ -260,7 +260,7 @@ function Home() {
             <Link
               key={cat.id}
               to="/products"
-              search={{ category: cat.id }}
+              search={{ category: cat.documentId }}
               className="reveal card-soft group overflow-hidden block"
               style={{ transitionDelay: `${i * 90}ms` }}
             >
@@ -308,7 +308,7 @@ function Home() {
                 Featured Products
               </h2>
             </div>
-            <Link to="/products" search={{ category: 0 }} className="btn-outline shrink-0">
+            <Link to="/products" search={{ category: "" }} className="btn-outline shrink-0">
               View All
             </Link>
           </div>

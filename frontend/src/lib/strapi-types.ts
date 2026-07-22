@@ -49,6 +49,7 @@ export type Product = {
   name: string;
   categoryId: number;
   categoryName: string;
+  categoryDocumentId: string;
   tagline: string;
   subText: string;
   price: number | null;
@@ -59,6 +60,7 @@ export type Product = {
 
 export type Category = {
   id: number;
+  documentId: string;
   name: string;
   description: string;
   image: string;

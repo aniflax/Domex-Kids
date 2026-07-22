@@ -41,6 +41,7 @@ export function mapProduct(sp: StrapiProduct): Product {
     name: sp.title,
     categoryId: sp.category?.id ?? 0,
     categoryName: sp.category?.title ?? "",
+    categoryDocumentId: sp.category?.documentId ?? "",
     tagline: sp.tagline ?? "",
     subText: sp.subText ?? "",
     price: sp.price ?? null,
@@ -53,6 +54,7 @@ export function mapProduct(sp: StrapiProduct): Product {
 export function mapCategory(sc: StrapiCategory): Category {
   return {
     id: sc.id,
+    documentId: sc.documentId,
     name: sc.title,
     description: sc.description ?? "",
     image: sc.image ? mediaUrl(sc.image) : "",

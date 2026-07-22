@@ -10,7 +10,7 @@ import heroImg from "../assets/hero.jpg";
 
 export const Route = createFileRoute("/products")({
   validateSearch: (search: Record<string, unknown>) => ({
-    category: Number(search.category) || 0,
+    category: String(search.category || ""),
   }),
   loader: async () => {
     const [cats, allProducts] = await Promise.all([
@@ -47,7 +47,7 @@ function Products() {
   const [active, setActive] = useState<Product | null>(null);
   const [selectedImage, setSelectedImage] = useState(0);
   const filtered =
-    category === 0 ? allProducts : allProducts.filter((p) => p.categoryId === category);
+    !category ? allProducts : allProducts.filter((p) => p.categoryDocumentId === category);
 
   return (
     <>
@@ -71,12 +71,12 @@ function Products() {
         <div className="container-x">
           <Reveal>
             <div className="inline-flex items-center gap-1.5 rounded-xl bg-muted p-1.5">
-              {[{ id: 0, name: "All" }, ...cats].map((c) => (
+              {[{ documentId: "", name: "All" }, ...cats].map((c) => (
                 <button
-                  key={c.id}
-                  onClick={() => navigate({ to: "/products", search: { category: c.id } })}
+                  key={c.documentId}
+                  onClick={() => navigate({ to: "/products", search: { category: c.documentId } })}
                   className={`rounded-lg px-5 py-2.5 text-sm font-medium transition-all duration-300 ${
-                    category === c.id
+                    category === c.documentId
                       ? "bg-background text-foreground shadow"
                       : "text-muted-foreground hover:text-foreground"
                   }`}
