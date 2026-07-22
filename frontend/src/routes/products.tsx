@@ -46,8 +46,10 @@ function Products() {
   const navigate = useNavigate();
   const [active, setActive] = useState<Product | null>(null);
   const [selectedImage, setSelectedImage] = useState(0);
-  const filtered =
-    !category ? allProducts : allProducts.filter((p) => p.categoryDocumentId === category);
+  const selectedCategory = cats.find((c) => c.documentId === category);
+  const filtered = !category
+    ? allProducts
+    : allProducts.filter((p) => isInCategory(p, category, selectedCategory));
 
   return (
     <>
@@ -245,4 +247,29 @@ function Products() {
       )}
     </>
   );
+}
+
+/**
+ * Strapi's draft/publish workflow can temporarily expose a published product
+ * without its relation, even though the category is selected in the admin.
+ * Prefer the relation whenever it is present; the title fallback is limited to
+ * relationless products and an exact normalized category-name match.
+ */
+function isInCategory(
+  product: Product,
+  categoryDocumentId: string,
+  selectedCategory?: Category,
+): boolean {
+  if (product.categoryDocumentId) {
+    return product.categoryDocumentId === categoryDocumentId;
+  }
+
+  return Boolean(
+    selectedCategory &&
+      normalizeCategoryName(product.name) === normalizeCategoryName(selectedCategory.name),
+  );
+}
+
+function normalizeCategoryName(value: string): string {
+  return value.trim().replace(/\s+/g, " ").toLocaleLowerCase();
 }
