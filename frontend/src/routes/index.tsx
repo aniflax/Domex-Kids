@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Check, ChevronDown, Clock, MapPin, Sparkles, Star, Truck, X } from "lucide-react";
 import { Reveal } from "@/components/site/Reveal";
-import { images } from "@/lib/site-config";
+import { images, site } from "@/lib/site-config";
 import { fetchHomeCategories, fetchHomeProducts, fetchVideos } from "@/lib/strapi";
 import type { Product, Category, Video } from "@/lib/strapi-types";
 
@@ -573,10 +573,12 @@ function Home() {
                   </div>
                 )}
                 <a
-                  href="/contact"
+                  href={`https://wa.me/${site.whatsapp}?text=${encodeURIComponent(`Hii, I am Interested in ${quickView.tagline || "Premium Quality"} ${quickView.name} share more details`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="mt-8 inline-flex items-center gap-2 rounded-full bg-foreground text-background px-5 py-3 text-sm font-medium hover:bg-brand transition-colors"
                 >
-                  Request line sheet
+                  Shop now
                 </a>
               </div>
             </div>

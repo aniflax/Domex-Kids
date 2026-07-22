@@ -3,7 +3,7 @@ import { useState } from "react";
 import { X } from "lucide-react";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionHeading } from "@/components/site/SectionHeading";
-import { images } from "@/lib/site-config";
+import { images, site } from "@/lib/site-config";
 import { fetchAllCategories, fetchAllProducts } from "@/lib/strapi";
 import type { Product, Category } from "@/lib/strapi-types";
 import heroImg from "../assets/hero.jpg";
@@ -234,10 +234,12 @@ function Products() {
                   </div>
                 )}
                 <a
-                  href="/contact"
+                  href={`https://wa.me/${site.whatsapp}?text=${encodeURIComponent(`Hii, I am Interested in ${active.tagline || "Premium Quality"} ${active.name} share more details`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="mt-8 inline-flex items-center gap-2 rounded-full bg-foreground text-background px-5 py-3 text-sm font-medium hover:bg-brand transition-colors"
                 >
-                  Request line sheet
+                  Shop now
                 </a>
               </div>
             </div>
