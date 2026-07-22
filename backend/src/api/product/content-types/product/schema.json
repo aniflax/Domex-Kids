@@ -25,7 +25,8 @@
     "photos": {
       "type": "media",
       "multiple": true,
-      "required": false
+      "required": false,
+      "allowedTypes": ["images"]
     },
     "description": {
       "type": "richtext"

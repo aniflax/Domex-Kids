@@ -26,7 +26,8 @@
     "image": {
       "type": "media",
       "multiple": false,
-      "required": false
+      "required": false,
+      "allowedTypes": ["images"]
     },
     "products": {
       "type": "relation",
