@@ -1,0 +1,7 @@
+name = "domex-kids"
+compatibility_date = "2025-07-22"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+NODE_VERSION = "22"
+VITE_STRAPI_URL = "https://domex-kids-strapi.onrender.com"
