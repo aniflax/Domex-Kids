@@ -35,6 +35,7 @@ const config = ({ env }: Core.Config.Shared.ConfigParams): Core.Config.Plugin =>
     config: {
       provider: 'aws-s3',
       providerOptions: {
+        baseUrl: env('CDN_URL'),
         s3Options: {
           endpoint: env('R2_ENDPOINT'),
           region: 'auto',
@@ -46,7 +47,6 @@ const config = ({ env }: Core.Config.Shared.ConfigParams): Core.Config.Plugin =>
             Bucket: env('R2_BUCKET_NAME'),
           },
           forcePathStyle: true,
-          cdn: env('CDN_URL'),
         },
       },
       actionOptions: {
