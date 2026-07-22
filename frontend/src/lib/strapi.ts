@@ -8,11 +8,7 @@ import type {
   Video,
 } from "./strapi-types";
 
-const STRAPI_URL =
-  import.meta.env.VITE_STRAPI_URL ||
-  (typeof window !== "undefined" && window.location.hostname === "domex-kids.vercel.app"
-    ? "https://domex-kids-strapi.onrender.com"
-    : "http://localhost:1337");
+const STRAPI_URL = import.meta.env.VITE_STRAPI_URL;
 
 export async function fetchStrapi<T>(endpoint: string): Promise<T> {
   const res = await fetch(`${STRAPI_URL}/api${endpoint}`);
