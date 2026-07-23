@@ -71,20 +71,22 @@ function Products() {
       <section className="mt-16 md:mt-10">
         <div className="container-x">
           <Reveal>
-            <div className="inline-flex items-center gap-1.5 rounded-xl bg-muted p-1.5 overflow-x-auto md:overflow-visible flex-nowrap">
-              {[{ documentId: "", name: "All" }, ...cats].map((c) => (
-                <button
-                  key={c.documentId}
-                  onClick={() => navigate({ to: "/products", search: { category: c.documentId }, resetScroll: false })}
-                  className={`rounded-lg px-5 py-2.5 text-sm font-medium transition-all duration-300 ${
-                    category === c.documentId
-                      ? "bg-background text-foreground shadow"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  {c.name}
-                </button>
-              ))}
+            <div className="rounded-xl bg-muted">
+              <div className="flex items-center gap-1.5 p-1.5 overflow-x-auto flex-nowrap scrollbar-hide">
+                {[{ documentId: "", name: "All" }, ...cats].map((c) => (
+                  <button
+                    key={c.documentId}
+                    onClick={() => navigate({ to: "/products", search: { category: c.documentId }, resetScroll: false })}
+                    className={`rounded-lg px-5 py-2.5 text-sm font-medium transition-all duration-300 shrink-0 ${
+                      category === c.documentId
+                        ? "bg-background text-foreground shadow"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {c.name}
+                  </button>
+                ))}
+              </div>
             </div>
           </Reveal>
         </div>
