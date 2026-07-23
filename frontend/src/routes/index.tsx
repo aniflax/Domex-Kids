@@ -356,7 +356,7 @@ function Home() {
               View All
             </Link>
           </div>
-          <div className="grid grid-cols-3 gap-4 md:gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
             {homeProducts.map((p, i) => (
               <article
                 key={p.id}
