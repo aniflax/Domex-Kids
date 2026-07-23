@@ -42,8 +42,7 @@ export const images = {
     "https://images.unsplash.com/photo-1503944583220-79d8926ad5e2?auto=format&fit=crop&w=1200&q=80",
   aboutLarge:
     "https://images.unsplash.com/photo-1503944168849-8bf86651b1d7?auto=format&fit=crop&w=1200&q=80",
-  founder:
-    "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=1200&q=80",
+  founder: "/founder.png",
   factory1:
     "https://images.unsplash.com/photo-1581091012184-7a1fd6c3c1a1?auto=format&fit=crop&w=1200&q=80",
   factory2:
