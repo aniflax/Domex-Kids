@@ -62,18 +62,21 @@ export function Navbar() {
       </div>
 
       <div
-        className={`fixed inset-0 z-[60] transition-opacity duration-300 lg:hidden ${
+        className={`fixed inset-0 z-[100] transition-opacity duration-300 lg:hidden ${
           open ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
+        style={{ backgroundColor: "#ffffff" }}
       >
         <div
-          className="absolute inset-0 bg-white"
+          className="absolute inset-0"
+          style={{ backgroundColor: "#ffffff" }}
           onClick={() => setOpen(false)}
         />
         <aside
-          className={`absolute inset-0 h-full w-full bg-white p-8 transition-transform duration-500 ${
+          className={`absolute inset-0 h-full w-full p-8 transition-transform duration-500 ${
             open ? "translate-x-0" : "translate-x-full"
           }`}
+          style={{ backgroundColor: "#ffffff" }}
         >
           <div className="flex items-center justify-between">
             <span className="font-serif text-xl">DOMEX KIDS</span>

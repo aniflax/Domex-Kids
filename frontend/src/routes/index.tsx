@@ -342,7 +342,7 @@ function Home() {
 
       {/* Handpicked Featured Products */}
       <section className="bg-cream/50">
-        <div className="container-x mx-auto max-w-7xl py-24 lg:py-32">
+        <div className="container-x mx-auto max-w-7xl pb-24 lg:pb-32">
           <div className="reveal mb-14 flex flex-wrap items-end justify-between gap-4">
             <div className="max-w-2xl">
               <div className="text-xs tracking-[0.3em] text-brand uppercase">Handpicked</div>
@@ -392,7 +392,7 @@ function Home() {
       </section>
 
       {/* Featured Videos */}
-      <section className="container-x mx-auto max-w-7xl py-24 lg:py-32">
+      <section className="container-x mx-auto max-w-7xl pb-24 lg:pb-32">
         <div className="reveal mx-auto mb-14 max-w-2xl text-center">
           <div className="text-xs tracking-[0.3em] text-brand uppercase">Featured Videos</div>
           <h2 className="mt-3 font-serif text-4xl leading-tight md:text-5xl">
@@ -456,7 +456,7 @@ function Home() {
 
       {/* Facilities */}
       <section className="bg-cream">
-        <div className="container-x mx-auto max-w-7xl py-24 lg:py-32">
+        <div className="container-x mx-auto max-w-7xl pb-24 lg:pb-32">
           <div className="reveal mx-auto mb-14 max-w-2xl text-center">
             <div className="text-xs tracking-[0.3em] text-brand uppercase">Our Facilities</div>
             <h2 className="mt-3 font-serif text-3xl leading-tight md:text-4xl">
@@ -513,7 +513,7 @@ function Home() {
       <FAQ />
 
       {/* CTA */}
-      <section className="mt-28 md:mt-40">
+      <section className="mt-24 md:mt-32">
         <div className="container-x">
           <div className="rounded-3xl overflow-hidden relative">
             <img
@@ -661,7 +661,7 @@ function Testimonials() {
   }, [items.length]);
 
   return (
-    <section className="container-x mx-auto max-w-7xl py-24 lg:py-32">
+    <section className="container-x mx-auto max-w-7xl pb-24 lg:pb-32">
       <div className="reveal mx-auto mb-14 max-w-2xl text-center">
         <div className="text-xs tracking-[0.3em] text-brand uppercase">Retail Partners</div>
         <h2 className="mt-3 font-serif text-4xl leading-tight md:text-5xl">
@@ -734,7 +734,7 @@ function FAQ() {
   ];
   const [open, setOpen] = useState<number | null>(0);
   return (
-    <section className="container-x mx-auto max-w-7xl py-24 lg:py-32">
+    <section className="container-x mx-auto max-w-7xl pb-24 lg:pb-32">
       <div className="reveal mx-auto mb-14 max-w-2xl text-center">
         <div className="text-xs tracking-[0.3em] text-brand uppercase">Frequently Asked</div>
         <h2 className="mt-3 font-serif text-4xl leading-tight md:text-5xl">
