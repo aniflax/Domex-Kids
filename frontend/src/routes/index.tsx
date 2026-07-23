@@ -293,7 +293,7 @@ function Home() {
       <section className="container-x mx-auto max-w-7xl pb-24 lg:pb-32">
         <div className="reveal mx-auto mb-14 max-w-2xl text-center">
           <div className="text-xs tracking-[0.3em] text-brand uppercase">The Collection</div>
-          <h2 className="mt-3 font-serif text-4xl leading-tight md:text-5xl whitespace-nowrap">
+          <h2 className="mt-3 font-serif text-3xl leading-tight md:text-5xl whitespace-nowrap">
             Fashion built for every age.
           </h2>
         </div>
