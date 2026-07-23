@@ -12,5 +12,11 @@ export default {
     menu: {
       logo: strapiLogo,
     },
+    translations: {
+      en: {
+        "Auth.form.welcome.title": "Welcome to Domex kids!",
+        "Auth.form.welcome.subtitle": "Log in to your account",
+      },
+    },
   },
 };
