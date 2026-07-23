@@ -75,7 +75,7 @@ function Products() {
               {[{ documentId: "", name: "All" }, ...cats].map((c) => (
                 <button
                   key={c.documentId}
-                  onClick={() => navigate({ to: "/products", search: { category: c.documentId } })}
+                  onClick={() => navigate({ to: "/products", search: { category: c.documentId }, resetScroll: false })}
                   className={`rounded-lg px-5 py-2.5 text-sm font-medium transition-all duration-300 ${
                     category === c.documentId
                       ? "bg-background text-foreground shadow"
@@ -91,20 +91,16 @@ function Products() {
       </section>
 
       <section className="mt-10 md:mt-14">
-        <div className="container-x grid md:grid-cols-2 gap-6">
+        <div className="container-x grid grid-cols-3 md:grid-cols-2 gap-4 md:gap-6">
           {filtered.length === 0 ? (
             <Reveal>
-              <p className="text-muted-foreground col-span-2">No products in this category yet.</p>
+              <p className="text-muted-foreground col-span-full">No products in this category yet.</p>
             </Reveal>
           ) : (
             filtered.map((p, i) => (
               <Reveal key={p.id} delay={i * 100}>
-                <article
-                  className={`hover-lift rounded-3xl overflow-hidden bg-white border border-border ${filtered.length === 1 || (i === 0 && filtered.length % 2 === 1) ? "md:col-span-2" : ""}`}
-                >
-                  <div
-                    className={`zoom-img ${filtered.length === 1 || (i === 0 && filtered.length % 2 === 1) ? "aspect-[16/9]" : "aspect-[5/4]"}`}
-                  >
+                <article className="hover-lift rounded-3xl overflow-hidden bg-white border border-border">
+                  <div className="zoom-img aspect-[5/4]">
                     <img
                       src={p.image}
                       alt={p.name}
@@ -112,22 +108,22 @@ function Products() {
                       loading="lazy"
                     />
                   </div>
-                  <div className="p-7 md:p-10 flex flex-wrap items-end justify-between gap-6">
+                  <div className="p-3 md:p-10 flex flex-wrap items-end justify-between gap-2 md:gap-6">
                     <div>
                       {p.description && (
                         <div className="text-xs uppercase tracking-[0.2em] text-brand">
                           {p.description.split("\n")[0].replace(/^·\s*/, "")}
                         </div>
                       )}
-                      <h3 className="mt-2 font-serif text-3xl md:text-4xl">{p.name}</h3>
-                      <p className="mt-2 text-muted-foreground max-w-md">{p.subText}</p>
+                      <h3 className="mt-1 md:mt-2 font-serif text-sm md:text-4xl">{p.name}</h3>
+                      <p className="hidden md:block mt-2 text-muted-foreground max-w-md">{p.subText}</p>
                     </div>
                     <button
                       onClick={() => {
                         setActive(p);
                         setSelectedImage(0);
                       }}
-                      className="group inline-flex items-center gap-2 rounded-full bg-foreground text-background px-5 py-3 text-sm font-medium hover:bg-brand transition-colors"
+                      className="group inline-flex items-center gap-1 md:gap-2 rounded-full bg-foreground text-background px-2.5 py-1 md:px-5 md:py-3 text-[0.55rem] md:text-sm font-medium hover:bg-brand transition-colors"
                     >
                       Quick View
                     </button>
