@@ -320,7 +320,7 @@ function Home() {
                 <Link
                   to="/products"
                   search={{ category: cat.documentId }}
-                  className="btn-outline mt-2 md:mt-5"
+                  className="btn-outline mt-2 md:mt-5 px-3 py-1.5 md:px-[1.75rem] md:py-[0.875rem] text-[0.6rem] md:text-sm"
                 >
                   View
                 </Link>
