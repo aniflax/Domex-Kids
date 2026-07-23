@@ -129,8 +129,8 @@ function Home() {
       {/* Hero */}
       <section className="relative isolate overflow-hidden pt-20">
         <div className="container-x mx-auto max-w-7xl">
-          <div className="grid gap-10 pb-16 pt-10 lg:grid-cols-12 lg:gap-16 lg:pb-24 lg:pt-20">
-            <div className="reveal lg:col-span-6 lg:pt-8">
+          <div className="flex flex-col gap-10 pb-16 pt-10 lg:grid lg:grid-cols-12 lg:gap-16 lg:pb-24 lg:pt-20">
+            <div className="reveal order-1 lg:col-span-6 lg:self-start lg:pt-8">
               <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-white/60 px-4 py-1.5 text-[0.7rem] tracking-[0.25em] text-brand uppercase">
                 <Sparkles className="h-3.5 w-3.5" /> Wholesale · Since 2014
               </div>
@@ -138,11 +138,11 @@ function Home() {
                 Premium Kids Fashion
                 <span className="block italic text-brand">for Retailers Across India</span>
               </h1>
-              <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground md:text-lg">
+              <p className="mt-6 hidden max-w-xl text-base leading-relaxed text-muted-foreground md:text-lg lg:block">
                 Trusted wholesale manufacturer delivering trendy boys' shirts, t-shirts and jeans
                 for ages 1–16 years. Crafted in Delhi, delivered nationwide.
               </p>
-              <div className="mt-9 flex flex-wrap gap-3">
+              <div className="mt-9 hidden flex-wrap gap-3 lg:flex">
                 <Link to="/products" search={{ category: "" }} className="btn-solid">
                   Explore Collection
                 </Link>
@@ -151,7 +151,7 @@ function Home() {
                 </Link>
               </div>
             </div>
-            <div className="reveal relative lg:col-span-6">
+            <div className="reveal relative order-2 lg:col-span-6">
               <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem] bg-secondary">
                 <img
                   src={heroImg}
@@ -169,18 +169,26 @@ function Home() {
                 <div className="text-xs text-muted-foreground">across India</div>
               </div>
             </div>
+            <div className="order-3 flex flex-wrap gap-3 lg:hidden">
+              <Link to="/products" search={{ category: "" }} className="btn-solid">
+                Explore Collection
+              </Link>
+              <Link to="/contact" className="btn-outline">
+                Become a Retail Partner
+              </Link>
+            </div>
           </div>
 
           {/* Stats */}
-          <div className="reveal grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-border bg-border lg:grid-cols-4">
+          <div className="reveal grid grid-cols-4 gap-px overflow-hidden rounded-3xl border border-border bg-border">
             {[
               { n: 2014, label: "Established", suffix: "" },
               { n: 10, label: "Years Experience", suffix: "+" },
               { n: 28, label: "States Delivered", suffix: "+" },
               { n: 16, label: "Ages Covered (1–16)", suffix: "" },
             ].map((s) => (
-              <div key={s.label} className="bg-background p-8 text-center md:p-10">
-                <div className="font-serif text-4xl text-foreground md:text-5xl">
+              <div key={s.label} className="bg-background p-2 text-center md:p-10">
+                <div className="font-serif text-xl text-foreground md:text-5xl">
                   <Counter to={s.n} suffix={s.suffix} />
                 </div>
                 <div className="mt-2 text-xs tracking-[0.2em] text-muted-foreground uppercase">
@@ -200,7 +208,41 @@ function Home() {
             Crafted in Delhi. Worn across India.
           </h2>
         </div>
-        <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
+
+        {/* Mobile: image left, timeline right */}
+        <div className="flex flex-row gap-4 items-start lg:hidden">
+          <div className="w-2/5 shrink-0">
+            <div className="aspect-[4/5] overflow-hidden rounded-2xl">
+              <img
+                src={facilityImg}
+                alt="DOMEX KIDS manufacturing facility"
+                loading="lazy"
+                className="h-full w-full object-cover"
+              />
+            </div>
+          </div>
+          <div className="flex-1">
+            <ol className="space-y-3 border-l border-border pl-3">
+              {[
+                ["2014", "Company Founded", "DOMEX KIDS begins in Gandhi Nagar."],
+                ["2016", "Growth", "First 100+ retail partners onboarded."],
+                ["2019", "Retail Expansion", "Reach extended across North India."],
+                ["2022", "Pan India Distribution", "Delivering to 28+ states."],
+                ["Today", "Manufacturing Excellence", "Trend, quality, scale — together."],
+              ].map(([year, title, desc]) => (
+                <li key={title} className="relative">
+                  <span className="absolute -left-[17px] top-1 h-2 w-2 rounded-full border-2 border-brand bg-background" />
+                  <div className="text-[0.55rem] tracking-[0.2em] text-brand uppercase">{year}</div>
+                  <div className="font-serif text-sm">{title}</div>
+                  <div className="text-[0.6rem] text-muted-foreground">{desc}</div>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+
+        {/* Desktop: grid layout */}
+        <div className="hidden gap-12 lg:grid lg:grid-cols-2 lg:gap-16">
           <div className="reveal relative">
             <div className="aspect-[4/5] w-full overflow-hidden rounded-[2rem]">
               <img
@@ -210,7 +252,7 @@ function Home() {
                 className="h-full w-full object-cover transition-transform duration-[1400ms] hover:scale-105"
               />
             </div>
-            <div className="absolute -right-4 -top-4 hidden rounded-2xl border border-border bg-white p-5 shadow-lg md:block">
+            <div className="absolute -right-4 -top-4 rounded-2xl border border-border bg-white p-5 shadow-lg">
               <div className="font-serif text-3xl text-brand">2014</div>
               <div className="text-xs tracking-widest text-muted-foreground uppercase">Founded</div>
             </div>
@@ -255,7 +297,7 @@ function Home() {
             Fashion built for every age.
           </h2>
         </div>
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid grid-cols-3 gap-4 md:gap-6">
           {homeCategories.map((cat, i) => (
             <Link
               key={cat.id}
@@ -273,12 +315,12 @@ function Home() {
                     className="h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105"
                   />
                 </div>
-                <div className="p-7">
-                  <h3 className="font-serif text-2xl">{cat.name}</h3>
-                  <p className="mt-1 text-sm text-muted-foreground">
+                <div className="p-4 md:p-7">
+                  <h3 className="font-serif text-sm md:text-2xl">{cat.name}</h3>
+                  <p className="mt-1 hidden text-xs text-muted-foreground md:block md:text-sm">
                     {cat.description || "Explore our collection."}
                   </p>
-                  <span className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-brand link-underline">
+                  <span className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-brand link-underline md:mt-5 md:text-sm md:gap-2">
                     View Collection
                   </span>
                 </div>
@@ -312,11 +354,11 @@ function Home() {
               View All
             </Link>
           </div>
-          <div className="grid gap-8 lg:grid-cols-3">
+          <div className="grid grid-cols-3 gap-4 md:gap-8">
             {homeProducts.map((p, i) => (
               <article
                 key={p.id}
-                className="reveal group rounded-2xl border border-border bg-white p-6 transition-shadow duration-500 hover:shadow-xl"
+                className="reveal group rounded-2xl border border-border bg-white p-3 transition-shadow duration-500 hover:shadow-xl md:p-6"
                 style={{ transitionDelay: `${i * 100}ms` }}
               >
                 <div className="aspect-[4/5] overflow-hidden rounded-xl bg-secondary">
@@ -327,18 +369,18 @@ function Home() {
                     className="h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105"
                   />
                 </div>
-                <div className="mt-6">
-                  <div className="text-xs tracking-[0.2em] text-brand uppercase">
+                <div className="mt-2 md:mt-6">
+                  <div className="text-[0.6rem] tracking-[0.2em] text-brand uppercase md:text-xs">
                     {p.price ? `From ₹${p.price}` : "Ages 1–16"}
                   </div>
-                  <h3 className="mt-1 font-serif text-2xl">{p.name}</h3>
-                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{p.subText}</p>
+                  <h3 className="mt-1 font-serif text-sm md:text-2xl">{p.name}</h3>
+                  <p className="mt-1 hidden text-xs text-muted-foreground leading-relaxed md:mt-2 md:block md:text-sm">{p.subText}</p>
                   <button
                     onClick={() => {
                       setQuickView(p);
                       setSelectedImage(0);
                     }}
-                    className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-brand link-underline cursor-pointer"
+                    className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-brand link-underline cursor-pointer md:mt-5 md:text-sm md:gap-2"
                   >
                     Shop Now
                   </button>
@@ -357,7 +399,7 @@ function Home() {
             See our collection in motion.
           </h2>
         </div>
-        <div className="grid gap-8 md:grid-cols-2">
+        <div className="grid grid-cols-2 gap-4 md:gap-8">
           {videos.map((v, i) => (
             <button
               key={v.title}
@@ -422,21 +464,21 @@ function Home() {
             </h2>
           </div>
           <div className="grid gap-8 lg:grid-cols-2">
-            <div className="reveal grid grid-cols-2 gap-4">
-              {[
-                ["Wholesale Orders", Truck],
-                ["Bulk Manufacturing", Sparkles],
-                ["Pan India Delivery", MapPin],
-                ["Retail Partnerships", Check],
-                ["Fast Dispatch", Clock],
-                ["Quality Assurance", Star],
-              ].map(([label, Icon]) => (
-                <div key={label as string} className="card-soft flex flex-col gap-3 p-6">
-                  <Icon className="h-6 w-6 text-brand" />
-                  <div className="font-serif text-lg">{label as string}</div>
-                </div>
-              ))}
-            </div>
+          <div className="reveal grid grid-cols-3 gap-3 md:gap-4">
+            {[
+              ["Wholesale Orders", Truck],
+              ["Bulk Manufacturing", Sparkles],
+              ["Pan India Delivery", MapPin],
+              ["Retail Partnerships", Check],
+              ["Fast Dispatch", Clock],
+              ["Quality Assurance", Star],
+            ].map(([label, Icon]) => (
+              <div key={label as string} className="card-soft flex flex-col gap-2 p-3 md:gap-3 md:p-6">
+                <Icon className="h-4 w-4 text-brand md:h-6 md:w-6" />
+                <div className="font-serif text-xs md:text-lg">{label as string}</div>
+              </div>
+            ))}
+          </div>
             <div className="reveal rounded-3xl border border-border bg-white p-8 md:p-10">
               <div className="text-xs tracking-[0.25em] text-brand uppercase">Business Process</div>
               <h3 className="mt-2 font-serif text-3xl">How an order flows</h3>
