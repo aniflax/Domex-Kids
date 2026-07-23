@@ -136,7 +136,7 @@ function Home() {
               </div>
               <h1 className="font-serif text-[2.5rem] leading-[1.05] tracking-tight text-foreground sm:text-5xl lg:text-[4rem]">
                 Premium Kids Fashion
-                <span className="block italic text-brand">for Retailers Across India</span>
+                <span className="whitespace-nowrap italic text-brand text-sm sm:text-lg md:text-xl lg:text-2xl">for Retailers Across India</span>
               </h1>
               <p className="mt-6 hidden max-w-xl text-base leading-relaxed text-muted-foreground md:text-lg lg:block">
                 Trusted wholesale manufacturer delivering trendy boys' shirts, t-shirts and jeans
