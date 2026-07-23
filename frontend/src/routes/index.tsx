@@ -299,33 +299,33 @@ function Home() {
         </div>
         <div className="grid grid-cols-3 gap-4 md:gap-6">
           {homeCategories.map((cat, i) => (
-            <Link
+            <article
               key={cat.id}
-              to="/products"
-              search={{ category: cat.documentId }}
-              className="reveal card-soft group overflow-hidden block"
+              className="reveal group rounded-2xl border border-border bg-white p-3 transition-shadow duration-500 hover:shadow-xl md:p-6"
               style={{ transitionDelay: `${i * 90}ms` }}
             >
-              <article>
-                <div className="aspect-[4/5] overflow-hidden bg-secondary">
-                  <img
-                    src={cat.image || heroImg}
-                    alt={cat.name}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105"
-                  />
-                </div>
-                <div className="p-4 md:p-7">
-                  <h3 className="font-serif text-sm md:text-2xl">{cat.name}</h3>
-                  <p className="mt-1 hidden text-xs text-muted-foreground md:block md:text-sm">
-                    {cat.description || "Explore our collection."}
-                  </p>
-                  <span className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-brand link-underline md:mt-5 md:text-sm md:gap-2">
-                    View Collection
-                  </span>
-                </div>
-              </article>
-            </Link>
+              <div className="aspect-[4/5] overflow-hidden rounded-xl bg-secondary">
+                <img
+                  src={cat.image || heroImg}
+                  alt={cat.name}
+                  loading="lazy"
+                  className="h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105"
+                />
+              </div>
+              <div className="mt-2 md:mt-6">
+                <h3 className="font-serif text-sm md:text-2xl">{cat.name}</h3>
+                <p className="mt-1 hidden text-xs text-muted-foreground leading-relaxed md:mt-2 md:block md:text-sm">
+                  {cat.description || "Explore our collection."}
+                </p>
+                <Link
+                  to="/products"
+                  search={{ category: cat.documentId }}
+                  className="btn-outline mt-2 md:mt-5"
+                >
+                  View
+                </Link>
+              </div>
+            </article>
           ))}
         </div>
 
