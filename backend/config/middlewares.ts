@@ -46,6 +46,7 @@ const config: Core.Config.Middlewares = [
   'strapi::body',
   'strapi::session',
   'strapi::favicon',
+  'global::admin-head-tags',
   'strapi::public',
 ];
 
