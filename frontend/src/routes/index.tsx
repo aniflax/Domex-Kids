@@ -415,6 +415,7 @@ function Home() {
                     src={`https://img.youtube.com/vi/${v.id}/maxresdefault.jpg`}
                     alt={v.title}
                     loading="lazy"
+                    onError={(e) => { (e.currentTarget as HTMLImageElement).src = `https://img.youtube.com/vi/${v.id}/hqdefault.jpg`; }}
                     className="h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105"
                   />
                 ) : (
