@@ -32,7 +32,7 @@ function mediaUrl(media: { url: string; formats?: Record<string, { url: string }
 
 function extractYouTubeId(url: string): string {
   const patterns = [
-    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/,
     /^([a-zA-Z0-9_-]{11})$/,
   ];
   for (const p of patterns) {
@@ -40,6 +40,36 @@ function extractYouTubeId(url: string): string {
     if (m) return m[1];
   }
   return url;
+}
+
+function extractInstagramId(url: string): string | null {
+  const patterns = [
+    /instagram\.com\/reel\/([a-zA-Z0-9_-]+)/,
+    /instagram\.com\/p\/([a-zA-Z0-9_-]+)/,
+    /instagram\.com\/reels\/([a-zA-Z0-9_-]+)/,
+  ];
+  for (const p of patterns) {
+    const m = url.match(p);
+    if (m) return m[1];
+  }
+  return null;
+}
+
+function detectPlatform(url: string): "youtube" | "instagram" {
+  if (/youtube\.com|youtu\.be/i.test(url)) return "youtube";
+  if (/instagram\.com/i.test(url)) return "instagram";
+  return "youtube";
+}
+
+async function fetchInstagramThumbnail(id: string): Promise<string | undefined> {
+  try {
+    const res = await fetch(`https://api.instagram.com/oembed?url=https://www.instagram.com/reel/${id}/`);
+    if (res.ok) {
+      const data = await res.json();
+      return data.thumbnail_url;
+    }
+  } catch {}
+  return undefined;
 }
 
 export function mapProduct(sp: StrapiProduct): Product {
@@ -71,11 +101,30 @@ export function mapCategory(sc: StrapiCategory): Category {
 }
 
 export function mapVideo(sv: StrapiVideo): Video {
+  const platform = detectPlatform(sv.videoUrl);
+  if (platform === "youtube") {
+    return {
+      title: sv.title,
+      videoUrl: sv.videoUrl,
+      platform: "youtube",
+      id: extractYouTubeId(sv.videoUrl),
+    };
+  }
   return {
     title: sv.title,
     videoUrl: sv.videoUrl,
-    videoId: extractYouTubeId(sv.videoUrl),
+    platform: "instagram",
+    id: extractInstagramId(sv.videoUrl) || sv.videoUrl,
   };
+}
+
+async function enrichVideos(videos: Video[]): Promise<Video[]> {
+  await Promise.all(videos.map(async (v) => {
+    if (v.platform === "instagram") {
+      v.thumbnail = await fetchInstagramThumbnail(v.id);
+    }
+  }));
+  return videos;
 }
 
 export async function fetchHomeCategories(): Promise<Category[]> {
@@ -117,7 +166,8 @@ export async function fetchAllCategories(): Promise<Category[]> {
 
 export async function fetchVideos(): Promise<Video[]> {
   const res = await fetchStrapi<{ data: StrapiVideo[] }>("/videos");
-  return res.data.map(mapVideo);
+  const videos = res.data.map(mapVideo);
+  return enrichVideos(videos);
 }
 
 export function useCategories() {

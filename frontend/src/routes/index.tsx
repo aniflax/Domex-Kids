@@ -122,7 +122,7 @@ function Home() {
   const { homeCategories, homeProducts, videos } = Route.useLoaderData();
   const [quickView, setQuickView] = useState<Product | null>(null);
   const [selectedImage, setSelectedImage] = useState(0);
-  const [video, setVideo] = useState<string | null>(null);
+  const [video, setVideo] = useState<Video | null>(null);
 
   return (
     <>
@@ -401,20 +401,38 @@ function Home() {
             See our collection in motion.
           </h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+        <div className="grid grid-cols-2 gap-4 md:gap-8">
           {videos.map((v, i) => (
             <button
               key={v.title}
-              onClick={() => setVideo(v.videoId)}
-              className="reveal group relative aspect-video w-full overflow-hidden rounded-2xl border border-border bg-black text-left"
+              onClick={() => setVideo(v)}
+              className="reveal group relative aspect-[9/16] w-full overflow-hidden rounded-2xl border border-border bg-black text-left"
               style={{ transitionDelay: `${i * 120}ms` }}
             >
-              <img
-                src={`https://img.youtube.com/vi/${v.videoId}/maxresdefault.jpg`}
-                alt={v.title}
-                loading="lazy"
-                className="h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105"
-              />
+              {v.platform === "youtube" ? (
+                <img
+                  src={`https://img.youtube.com/vi/${v.id}/maxresdefault.jpg`}
+                  alt={v.title}
+                  loading="lazy"
+                  className="h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105"
+                />
+              ) : (
+                <>
+                  {v.thumbnail ? (
+                    <img
+                      src={v.thumbnail}
+                      alt={v.title}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="h-full w-full bg-gradient-to-br from-[#833AB4] via-[#FD1D1D] to-[#FCAF45]" />
+                  )}
+                  <div className="absolute top-3 right-3 rounded-full bg-white/20 backdrop-blur px-2.5 py-1 text-[0.55rem] font-medium text-white tracking-wider uppercase md:top-4 md:right-4 md:text-xs">
+                    Instagram
+                  </div>
+                </>
+              )}
               <div className="absolute inset-0 bg-foreground/20 transition-opacity duration-500 group-hover:bg-foreground/10" />
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="flex h-16 w-16 items-center justify-center rounded-full bg-background/90 text-foreground shadow-lg transition-transform duration-500 group-hover:scale-110 md:h-20 md:w-20">
@@ -441,18 +459,32 @@ function Home() {
           className="fixed inset-0 z-[80] bg-foreground/80 backdrop-blur-sm flex items-center justify-center p-4 animate-[fade-in_0.3s_ease-out]"
           onClick={() => setVideo(null)}
         >
-          <div
-            className="w-full max-w-4xl aspect-video rounded-2xl overflow-hidden shadow-2xl animate-[fade-up_0.4s_ease-out]"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <iframe
-              src={`https://www.youtube.com/embed/${video}?autoplay=1`}
-              title="YouTube video"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              className="h-full w-full"
-            />
-          </div>
+          {video.platform === "youtube" ? (
+            <div
+              className="w-full max-w-4xl aspect-video rounded-2xl overflow-hidden shadow-2xl animate-[fade-up_0.4s_ease-out]"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <iframe
+                src={`https://www.youtube.com/embed/${video.id}?autoplay=1`}
+                title="YouTube video"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="h-full w-full"
+              />
+            </div>
+          ) : (
+            <div
+              className="w-full max-w-md aspect-[9/16] rounded-2xl overflow-hidden shadow-2xl animate-[fade-up_0.4s_ease-out] bg-white"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <iframe
+                src={`https://www.instagram.com/reel/${video.id}/embed/`}
+                title="Instagram reel"
+                allowFullScreen
+                className="h-full w-full"
+              />
+            </div>
+          )}
         </div>
       )}
 

@@ -69,5 +69,7 @@ export type Category = {
 export type Video = {
   title: string;
   videoUrl: string;
-  videoId: string;
+  platform: "youtube" | "instagram";
+  id: string;
+  thumbnail?: string;
 };
