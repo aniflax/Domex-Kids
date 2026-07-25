@@ -401,52 +401,54 @@ function Home() {
             See our collection in motion.
           </h2>
         </div>
-        <div className="grid grid-cols-2 gap-4 md:gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
           {videos.map((v, i) => (
             <button
               key={v.title}
               onClick={() => setVideo(v)}
-              className="reveal group relative aspect-[9/16] w-full overflow-hidden rounded-2xl border border-border bg-black text-left"
-              style={{ transitionDelay: `${i * 120}ms` }}
+              className="reveal group rounded-2xl border border-border bg-white p-3 transition-shadow duration-500 hover:shadow-xl md:p-6 text-left"
+              style={{ transitionDelay: `${i * 100}ms` }}
             >
-              {v.platform === "youtube" ? (
-                <img
-                  src={`https://img.youtube.com/vi/${v.id}/maxresdefault.jpg`}
-                  alt={v.title}
-                  loading="lazy"
-                  className="h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105"
-                />
-              ) : (
-                <>
-                  {v.thumbnail ? (
-                    <img
-                      src={v.thumbnail}
-                      alt={v.title}
-                      loading="lazy"
-                      className="h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105"
-                    />
-                  ) : (
-                    <div className="h-full w-full bg-gradient-to-br from-[#833AB4] via-[#FD1D1D] to-[#FCAF45]" />
-                  )}
-                  <div className="absolute top-3 right-3 rounded-full bg-white/20 backdrop-blur px-2.5 py-1 text-[0.55rem] font-medium text-white tracking-wider uppercase md:top-4 md:right-4 md:text-xs">
-                    Instagram
+              <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-secondary">
+                {v.platform === "youtube" ? (
+                  <img
+                    src={`https://img.youtube.com/vi/${v.id}/maxresdefault.jpg`}
+                    alt={v.title}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105"
+                  />
+                ) : (
+                  <>
+                    {v.thumbnail ? (
+                      <img
+                        src={v.thumbnail}
+                        alt={v.title}
+                        loading="lazy"
+                        className="h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="h-full w-full bg-gradient-to-br from-[#833AB4] via-[#FD1D1D] to-[#FCAF45]" />
+                    )}
+                    <div className="absolute top-2 right-2 rounded-full bg-white/20 backdrop-blur px-2 py-0.5 text-[0.5rem] font-medium text-white tracking-wider uppercase md:top-3 md:right-3 md:text-[0.6rem]">
+                      Instagram
+                    </div>
+                  </>
+                )}
+                <div className="absolute inset-0 bg-foreground/20 transition-opacity duration-500 group-hover:bg-foreground/10" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-background/90 text-foreground shadow-lg transition-transform duration-500 group-hover:scale-110 md:h-14 md:w-14">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      className="ml-0.5 h-5 w-5 md:h-6 md:w-6"
+                    >
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
                   </div>
-                </>
-              )}
-              <div className="absolute inset-0 bg-foreground/20 transition-opacity duration-500 group-hover:bg-foreground/10" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-background/90 text-foreground shadow-lg transition-transform duration-500 group-hover:scale-110 md:h-20 md:w-20">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="ml-0.5 h-6 w-6 md:h-8 md:w-8"
-                  >
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
                 </div>
               </div>
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-foreground/80 to-transparent p-6 pt-12">
-                <h3 className="font-serif text-lg text-background md:text-xl">{v.title}</h3>
+              <div className="mt-2 md:mt-6">
+                <h3 className="font-serif text-sm md:text-2xl">{v.title}</h3>
               </div>
             </button>
           ))}
@@ -474,12 +476,13 @@ function Home() {
             </div>
           ) : (
             <div
-              className="w-full max-w-md aspect-[9/16] rounded-2xl overflow-hidden shadow-2xl animate-[fade-up_0.4s_ease-out] bg-white"
+              className="w-full max-w-sm aspect-[9/16] rounded-2xl overflow-hidden shadow-2xl animate-[fade-up_0.4s_ease-out] bg-black"
               onClick={(e) => e.stopPropagation()}
             >
               <iframe
                 src={`https://www.instagram.com/reel/${video.id}/embed/`}
                 title="Instagram reel"
+                allow="autoplay; encrypted-media"
                 allowFullScreen
                 className="h-full w-full"
               />
