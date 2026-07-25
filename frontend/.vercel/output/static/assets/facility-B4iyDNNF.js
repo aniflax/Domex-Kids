@@ -1,0 +1,1 @@
+var e=`/assets/facility-D72uRMcn.jpg`;export{e as t};

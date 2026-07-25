@@ -14,7 +14,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { WhatsAppButton } from "@/components/site/WhatsAppButton";
-import { BackToTop } from "@/components/site/BackToTop";
+
 import { SocialBar } from "@/components/site/SocialBar";
 
 function NotFoundComponent() {
@@ -162,7 +162,6 @@ function RootComponent() {
       <Footer />
       <SocialBar />
       <WhatsAppButton />
-      <BackToTop />
     </QueryClientProvider>
   );
 }
