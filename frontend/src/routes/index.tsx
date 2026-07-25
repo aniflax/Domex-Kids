@@ -401,7 +401,7 @@ function Home() {
             See our collection in motion.
           </h2>
         </div>
-        <div className="grid grid-cols-2 gap-4 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
           {videos.map((v, i) => (
             <button
               key={v.title}

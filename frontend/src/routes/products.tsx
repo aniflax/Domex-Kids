@@ -97,7 +97,7 @@ function Products() {
       </section>
 
       <section className="mt-10 md:mt-14">
-        <div className="container-x grid grid-cols-2 md:grid-cols-2 gap-4 md:gap-6">
+        <div className="container-x grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
           {filtered.length === 0 ? (
             <Reveal>
               <p className="text-muted-foreground col-span-full">No products in this category yet.</p>
@@ -105,7 +105,7 @@ function Products() {
           ) : (
             filtered.map((p, i) => (
               <Reveal key={p.id} delay={i * 100}>
-                <article className="hover-lift group rounded-3xl overflow-hidden bg-white border border-border">
+                <article className="group rounded-2xl border border-border bg-white p-3 transition-shadow duration-500 hover:shadow-xl md:p-6">
                   <div className="aspect-[4/5] overflow-hidden rounded-xl bg-secondary">
                     <img
                       src={p.image}
@@ -114,22 +114,20 @@ function Products() {
                       loading="lazy"
                     />
                   </div>
-                  <div className="p-3 md:p-10 flex flex-wrap items-end justify-between gap-2 md:gap-6">
-                    <div>
-                      {p.description && (
-                        <div className="text-xs uppercase tracking-[0.2em] text-brand">
-                          {p.description.split("\n")[0].replace(/^·\s*/, "")}
-                        </div>
-                      )}
-                      <h3 className="mt-1 md:mt-2 font-serif text-sm md:text-4xl">{p.name}</h3>
-                      <p className="hidden md:block mt-2 text-muted-foreground max-w-md">{p.subText}</p>
-                    </div>
+                  <div className="mt-2 md:mt-6">
+                    {p.description && (
+                      <div className="text-[0.6rem] tracking-[0.2em] text-brand uppercase md:text-xs">
+                        {p.description.split("\n")[0].replace(/^·\s*/, "")}
+                      </div>
+                    )}
+                    <h3 className="mt-1 font-serif text-sm md:text-2xl">{p.name}</h3>
+                    <p className="mt-1 hidden text-xs text-muted-foreground leading-relaxed md:mt-2 md:block md:text-sm">{p.subText}</p>
                     <button
                       onClick={() => {
                         setActive(p);
                         setSelectedImage(0);
                       }}
-                      className="group inline-flex items-center gap-1 md:gap-2 rounded-full bg-foreground text-background px-2.5 py-1 md:px-5 md:py-3 text-[0.55rem] md:text-sm font-medium hover:bg-brand transition-colors"
+                      className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-brand link-underline cursor-pointer md:mt-5 md:text-sm md:gap-2"
                     >
                       Quick View
                     </button>

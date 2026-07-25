@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { z } from "zod";
-import { Mail, Phone, MapPin, Clock, Send, CheckCircle2 } from "lucide-react";
+import { Mail, Phone, MapPin, Clock, Send, CheckCircle2, MessageCircle } from "lucide-react";
 import { Reveal } from "@/components/site/Reveal";
 import { site } from "@/lib/site-config";
 
@@ -30,6 +30,8 @@ const schema = z.object({
 function Contact() {
   const [sent, setSent] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const formRef = useRef<HTMLFormElement>(null);
+  const [lastData, setLastData] = useState<Record<string, string> | null>(null);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -43,8 +45,13 @@ function Contact() {
       return;
     }
     setErrors({});
+    setLastData(parsed.data);
     setSent(true);
   };
+
+  const waMessage = lastData
+    ? `*New Enquiry from DOMEX KIDS Website*%0A%0A*Name:* ${encodeURIComponent(lastData.name)}%0A*Business:* ${encodeURIComponent(lastData.business)}%0A*Phone:* ${encodeURIComponent(lastData.phone)}%0A*Email:* ${encodeURIComponent(lastData.email)}%0A*Message:* ${encodeURIComponent(lastData.message)}`
+    : "";
 
   return (
     <>
@@ -69,16 +76,31 @@ function Contact() {
           {/* Form */}
           <div className="lg:col-span-7">
             <Reveal>
-              <form onSubmit={onSubmit} className="rounded-3xl bg-white border border-border p-8 md:p-10">
+              <form ref={formRef} onSubmit={onSubmit} className="rounded-3xl bg-white border border-border p-8 md:p-10">
                 {sent ? (
                   <div className="flex flex-col items-center text-center py-10">
                     <div className="h-14 w-14 rounded-full bg-secondary flex items-center justify-center text-success">
                       <CheckCircle2 size={26} />
                     </div>
-                    <h3 className="mt-6 font-serif text-2xl">Message received.</h3>
+                    <h3 className="mt-6 font-serif text-2xl">Details submitted</h3>
                     <p className="mt-2 text-muted-foreground max-w-md">
-                      Thank you. We'll get back to you within one business day at the email or phone you shared.
+                      Send your enquiry directly to us on WhatsApp so we can respond right away.
                     </p>
+                    <a
+                      href={`https://wa.me/${site.whatsapp}?text=${waMessage}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#25D366] text-white px-6 py-3.5 text-sm font-medium hover:bg-[#20bd5a] transition-colors"
+                    >
+                      <MessageCircle size={18} /> Send via WhatsApp
+                    </a>
+                    <button
+                      type="button"
+                      onClick={() => { setSent(false); setLastData(null); }}
+                      className="mt-4 text-xs text-muted-foreground link-underline cursor-pointer"
+                    >
+                      Submit another enquiry
+                    </button>
                   </div>
                 ) : (
                   <div className="grid gap-5">
