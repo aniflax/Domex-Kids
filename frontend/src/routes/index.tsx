@@ -463,7 +463,7 @@ function Home() {
         >
           {video.platform === "youtube" ? (
             <div
-              className="w-full max-w-4xl aspect-video rounded-2xl overflow-hidden shadow-2xl animate-[fade-up_0.4s_ease-out]"
+              className="w-full max-w-sm aspect-[9/16] rounded-2xl overflow-hidden shadow-2xl animate-[fade-up_0.4s_ease-out] bg-black"
               onClick={(e) => e.stopPropagation()}
             >
               <iframe
