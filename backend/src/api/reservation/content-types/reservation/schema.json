@@ -1,0 +1,57 @@
+{
+  "kind": "collectionType",
+  "collectionName": "reservations",
+  "info": {
+    "singularName": "reservation",
+    "pluralName": "reservations",
+    "displayName": "Reservation",
+    "description": "A 45-minute stock hold for a customer's cart item"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "session": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::store-session.store-session",
+      "inversedBy": "reservations"
+    },
+    "product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product.product"
+    },
+    "variant": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::variant.variant"
+    },
+    "color": {
+      "type": "string"
+    },
+    "size": {
+      "type": "string"
+    },
+    "sku": {
+      "type": "string"
+    },
+    "quantity": {
+      "type": "integer",
+      "default": 1,
+      "min": 1
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": ["active", "expired", "converted", "released"],
+      "default": "active"
+    },
+    "reservedAt": {
+      "type": "datetime"
+    },
+    "expiresAt": {
+      "type": "datetime"
+    }
+  }
+}

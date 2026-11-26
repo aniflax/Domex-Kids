@@ -35,6 +35,13 @@
       "target": "api::product.product",
       "mappedBy": "category",
       "visible": false
+    },
+    "subcategories": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::subcategory.subcategory",
+      "mappedBy": "category",
+      "visible": false
     }
   }
 }

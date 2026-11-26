@@ -43,6 +43,18 @@
     "showOnHomepage": {
       "type": "boolean",
       "default": true
+    },
+    "subcategory": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::subcategory.subcategory",
+      "inversedBy": "products"
+    },
+    "variants": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::variant.variant",
+      "mappedBy": "product"
     }
   }
 }

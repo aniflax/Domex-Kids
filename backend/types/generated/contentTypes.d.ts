@@ -441,6 +441,122 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiAuditLogAuditLog extends Struct.CollectionTypeSchema {
+  collectionName: 'audit_logs';
+  info: {
+    description: 'Store activity audit trail';
+    displayName: 'Audit Log';
+    pluralName: 'audit-logs';
+    singularName: 'audit-log';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    action: Schema.Attribute.String & Schema.Attribute.Required;
+    actor: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    at: Schema.Attribute.DateTime;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::audit-log.audit-log'
+    > &
+      Schema.Attribute.Private;
+    meta: Schema.Attribute.JSON;
+    publishedAt: Schema.Attribute.DateTime;
+    targetId: Schema.Attribute.String;
+    targetType: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiCategoryAccessCategoryAccess
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'category_accesses';
+  info: {
+    description: 'A category unlocked for a customer session';
+    displayName: 'Category Access';
+    pluralName: 'category-accesses';
+    singularName: 'category-access';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    active: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    category: Schema.Attribute.Relation<'manyToOne', 'api::category.category'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    expiresAt: Schema.Attribute.DateTime;
+    grantedAt: Schema.Attribute.DateTime;
+    grantedBy: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::category-access.category-access'
+    > &
+      Schema.Attribute.Private;
+    method: Schema.Attribute.Enumeration<
+      ['remote', 'qr', 'code', 'master_pass']
+    > &
+      Schema.Attribute.DefaultTo<'remote'>;
+    publishedAt: Schema.Attribute.DateTime;
+    session: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::store-session.store-session'
+    >;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiCategoryCodeCategoryCode
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'category_codes';
+  info: {
+    description: 'Auto-regenerating access code + QR token for a category';
+    displayName: 'Category Code';
+    pluralName: 'category-codes';
+    singularName: 'category-code';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    category: Schema.Attribute.Relation<'oneToOne', 'api::category.category'>;
+    code: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    generatedAt: Schema.Attribute.DateTime;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::category-code.category-code'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    qrToken: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    version: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<1>;
+  };
+}
+
 export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
   collectionName: 'categories';
   info: {
@@ -457,15 +573,20 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     description: Schema.Attribute.Text;
-    image: Schema.Attribute.Media;
+    image: Schema.Attribute.Media<'images'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::category.category'
     > &
       Schema.Attribute.Private;
+    products: Schema.Attribute.Relation<'oneToMany', 'api::product.product'>;
     publishedAt: Schema.Attribute.DateTime;
     showOnHomepage: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    subcategories: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::subcategory.subcategory'
+    >;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -501,6 +622,51 @@ export interface ApiHealthCheckHealthCheck extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
+  collectionName: 'orders';
+  info: {
+    description: 'A pick-list ticket requested by a customer';
+    displayName: 'Order';
+    pluralName: 'orders';
+    singularName: 'order';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    completedAt: Schema.Attribute.DateTime;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    customer: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    handledBy: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    items: Schema.Attribute.Component<'shared.order-item', true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::order.order'> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    requestedAt: Schema.Attribute.DateTime;
+    session: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::store-session.store-session'
+    >;
+    status: Schema.Attribute.Enumeration<
+      ['requested', 'picking', 'ready', 'completed', 'cancelled']
+    > &
+      Schema.Attribute.DefaultTo<'requested'>;
+    totalItems: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiProductProduct extends Struct.CollectionTypeSchema {
   collectionName: 'products';
   info: {
@@ -524,13 +690,199 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       'api::product.product'
     > &
       Schema.Attribute.Private;
-    photos: Schema.Attribute.Media<undefined, true>;
+    photos: Schema.Attribute.Media<'images', true>;
     price: Schema.Attribute.Decimal;
     publishedAt: Schema.Attribute.DateTime;
     showOnHomepage: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    subcategory: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::subcategory.subcategory'
+    >;
     subText: Schema.Attribute.Text;
     tagline: Schema.Attribute.String;
     title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    variants: Schema.Attribute.Relation<'oneToMany', 'api::variant.variant'>;
+  };
+}
+
+export interface ApiReservationReservation extends Struct.CollectionTypeSchema {
+  collectionName: 'reservations';
+  info: {
+    description: "A 45-minute stock hold for a customer's cart item";
+    displayName: 'Reservation';
+    pluralName: 'reservations';
+    singularName: 'reservation';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    color: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    expiresAt: Schema.Attribute.DateTime;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::reservation.reservation'
+    > &
+      Schema.Attribute.Private;
+    product: Schema.Attribute.Relation<'manyToOne', 'api::product.product'>;
+    publishedAt: Schema.Attribute.DateTime;
+    quantity: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 1;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<1>;
+    reservedAt: Schema.Attribute.DateTime;
+    session: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::store-session.store-session'
+    >;
+    size: Schema.Attribute.String;
+    sku: Schema.Attribute.String;
+    status: Schema.Attribute.Enumeration<
+      ['active', 'expired', 'converted', 'released']
+    > &
+      Schema.Attribute.DefaultTo<'active'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    variant: Schema.Attribute.Relation<'manyToOne', 'api::variant.variant'>;
+  };
+}
+
+export interface ApiStoreSessionStoreSession
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'store_sessions';
+  info: {
+    description: "A customer's in-store check-in";
+    displayName: 'Store Session';
+    pluralName: 'store-sessions';
+    singularName: 'store-session';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    accesses: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::category-access.category-access'
+    >;
+    checkInAt: Schema.Attribute.DateTime;
+    checkOutAt: Schema.Attribute.DateTime;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    customer: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    deviceLabel: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::store-session.store-session'
+    > &
+      Schema.Attribute.Private;
+    masterPassExpiresAt: Schema.Attribute.DateTime;
+    orders: Schema.Attribute.Relation<'oneToMany', 'api::order.order'>;
+    publishedAt: Schema.Attribute.DateTime;
+    reservations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::reservation.reservation'
+    >;
+    status: Schema.Attribute.Enumeration<['checked_in', 'checked_out']> &
+      Schema.Attribute.DefaultTo<'checked_in'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiSubcategorySubcategory extends Struct.CollectionTypeSchema {
+  collectionName: 'subcategories';
+  info: {
+    description: 'Sub-categories within a category';
+    displayName: 'Sub-Category';
+    pluralName: 'subcategories';
+    singularName: 'subcategory';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    category: Schema.Attribute.Relation<'manyToOne', 'api::category.category'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    image: Schema.Attribute.Media<'images'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::subcategory.subcategory'
+    > &
+      Schema.Attribute.Private;
+    order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    products: Schema.Attribute.Relation<'oneToMany', 'api::product.product'>;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiVariantVariant extends Struct.CollectionTypeSchema {
+  collectionName: 'variants';
+  info: {
+    description: 'A colour + size stock bucket for a product';
+    displayName: 'Variant';
+    pluralName: 'variants';
+    singularName: 'variant';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    color: Schema.Attribute.String & Schema.Attribute.Required;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::variant.variant'
+    > &
+      Schema.Attribute.Private;
+    product: Schema.Attribute.Relation<'manyToOne', 'api::product.product'>;
+    publishedAt: Schema.Attribute.DateTime;
+    reserved: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 0;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<0>;
+    size: Schema.Attribute.String & Schema.Attribute.Required;
+    sku: Schema.Attribute.String;
+    stock: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 0;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<0>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1023,6 +1375,10 @@ export interface PluginUsersPermissionsUser
     timestamps: true;
   };
   attributes: {
+    appRole: Schema.Attribute.Enumeration<
+      ['customer', 'pending_staff', 'staff', 'admin', 'blocked']
+    > &
+      Schema.Attribute.DefaultTo<'customer'>;
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     confirmationToken: Schema.Attribute.String & Schema.Attribute.Private;
     confirmed: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
@@ -1034,6 +1390,7 @@ export interface PluginUsersPermissionsUser
       Schema.Attribute.SetMinMaxLength<{
         minLength: 6;
       }>;
+    fullName: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -1045,6 +1402,7 @@ export interface PluginUsersPermissionsUser
       Schema.Attribute.SetMinMaxLength<{
         minLength: 6;
       }>;
+    picture: Schema.Attribute.String;
     provider: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     resetPasswordToken: Schema.Attribute.String & Schema.Attribute.Private;
@@ -1075,9 +1433,17 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::audit-log.audit-log': ApiAuditLogAuditLog;
+      'api::category-access.category-access': ApiCategoryAccessCategoryAccess;
+      'api::category-code.category-code': ApiCategoryCodeCategoryCode;
       'api::category.category': ApiCategoryCategory;
       'api::health-check.health-check': ApiHealthCheckHealthCheck;
+      'api::order.order': ApiOrderOrder;
       'api::product.product': ApiProductProduct;
+      'api::reservation.reservation': ApiReservationReservation;
+      'api::store-session.store-session': ApiStoreSessionStoreSession;
+      'api::subcategory.subcategory': ApiSubcategorySubcategory;
+      'api::variant.variant': ApiVariantVariant;
       'api::video.video': ApiVideoVideo;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;

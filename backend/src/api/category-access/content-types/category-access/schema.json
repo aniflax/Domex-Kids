@@ -1,0 +1,47 @@
+{
+  "kind": "collectionType",
+  "collectionName": "category_accesses",
+  "info": {
+    "singularName": "category-access",
+    "pluralName": "category-accesses",
+    "displayName": "Category Access",
+    "description": "A category unlocked for a customer session"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "session": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::store-session.store-session",
+      "inversedBy": "accesses"
+    },
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::category.category"
+    },
+    "method": {
+      "type": "enumeration",
+      "enum": ["remote", "qr", "code", "master_pass"],
+      "default": "remote"
+    },
+    "grantedBy": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "grantedAt": {
+      "type": "datetime"
+    },
+    "expiresAt": {
+      "type": "datetime"
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

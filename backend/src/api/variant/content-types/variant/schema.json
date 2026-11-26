@@ -1,0 +1,43 @@
+{
+  "kind": "collectionType",
+  "collectionName": "variants",
+  "info": {
+    "singularName": "variant",
+    "pluralName": "variants",
+    "displayName": "Variant",
+    "description": "A colour + size stock bucket for a product"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product.product",
+      "inversedBy": "variants"
+    },
+    "color": {
+      "type": "string",
+      "required": true
+    },
+    "size": {
+      "type": "string",
+      "required": true
+    },
+    "sku": {
+      "type": "string"
+    },
+    "stock": {
+      "type": "integer",
+      "default": 0,
+      "min": 0
+    },
+    "reserved": {
+      "type": "integer",
+      "default": 0,
+      "min": 0
+    }
+  }
+}

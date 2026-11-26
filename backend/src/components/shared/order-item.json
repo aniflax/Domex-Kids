@@ -1,0 +1,34 @@
+{
+  "collectionName": "components_shared_order_items",
+  "info": {
+    "displayName": "Order Item",
+    "description": "A line item on a pick-list ticket"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "productDocumentId": {
+      "type": "string"
+    },
+    "variantDocumentId": {
+      "type": "string"
+    },
+    "color": {
+      "type": "string"
+    },
+    "size": {
+      "type": "string"
+    },
+    "sku": {
+      "type": "string"
+    },
+    "quantity": {
+      "type": "integer",
+      "default": 1,
+      "min": 1
+    }
+  }
+}

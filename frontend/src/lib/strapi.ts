@@ -24,7 +24,7 @@ export async function fetchStrapi<T>(endpoint: string): Promise<T> {
   return res.json();
 }
 
-function mediaUrl(media: { url: string; formats?: Record<string, { url: string }> }): string {
+export function mediaUrl(media: { url: string; formats?: Record<string, { url: string }> }): string {
   const url = media.formats?.medium?.url || media.formats?.small?.url || media.url;
   if (url.startsWith("http")) return url;
   return `${STRAPI_URL}${url}`;

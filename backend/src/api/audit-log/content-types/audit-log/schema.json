@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "audit_logs",
+  "info": {
+    "singularName": "audit-log",
+    "pluralName": "audit-logs",
+    "displayName": "Audit Log",
+    "description": "Store activity audit trail"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "actor": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "action": {
+      "type": "string",
+      "required": true
+    },
+    "targetType": {
+      "type": "string"
+    },
+    "targetId": {
+      "type": "string"
+    },
+    "meta": {
+      "type": "json"
+    },
+    "at": {
+      "type": "datetime"
+    }
+  }
+}

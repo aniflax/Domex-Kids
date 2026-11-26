@@ -1,0 +1,34 @@
+{
+  "kind": "collectionType",
+  "collectionName": "category_codes",
+  "info": {
+    "singularName": "category-code",
+    "pluralName": "category-codes",
+    "displayName": "Category Code",
+    "description": "Auto-regenerating access code + QR token for a category"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "category": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::category.category"
+    },
+    "code": {
+      "type": "string"
+    },
+    "qrToken": {
+      "type": "string"
+    },
+    "version": {
+      "type": "integer",
+      "default": 1
+    },
+    "generatedAt": {
+      "type": "datetime"
+    }
+  }
+}

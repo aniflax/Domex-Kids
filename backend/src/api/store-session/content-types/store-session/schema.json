@@ -1,0 +1,56 @@
+{
+  "kind": "collectionType",
+  "collectionName": "store_sessions",
+  "info": {
+    "singularName": "store-session",
+    "pluralName": "store-sessions",
+    "displayName": "Store Session",
+    "description": "A customer's in-store check-in"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "customer": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": ["checked_in", "checked_out"],
+      "default": "checked_in"
+    },
+    "checkInAt": {
+      "type": "datetime"
+    },
+    "checkOutAt": {
+      "type": "datetime"
+    },
+    "masterPassExpiresAt": {
+      "type": "datetime"
+    },
+    "deviceLabel": {
+      "type": "string"
+    },
+    "accesses": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::category-access.category-access",
+      "mappedBy": "session"
+    },
+    "reservations": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::reservation.reservation",
+      "mappedBy": "session"
+    },
+    "orders": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::order.order",
+      "mappedBy": "session"
+    }
+  }
+}

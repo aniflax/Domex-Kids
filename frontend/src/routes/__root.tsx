@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -11,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { AuthProvider } from "@/lib/auth";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { WhatsAppButton } from "@/components/site/WhatsAppButton";
@@ -152,16 +154,21 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const isPortal =
+    pathname.startsWith("/showroom") || pathname.startsWith("/staff") || pathname === "/login";
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Navbar />
-      <main className="min-h-screen">
-        <Outlet />
-      </main>
-      <Footer />
-      <SocialBar />
-      <WhatsAppButton />
+      <AuthProvider>
+        {!isPortal && <Navbar />}
+        <main className="min-h-screen">
+          <Outlet />
+        </main>
+        {!isPortal && <Footer />}
+        {!isPortal && <SocialBar />}
+        {!isPortal && <WhatsAppButton />}
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

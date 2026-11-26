@@ -1,0 +1,52 @@
+{
+  "kind": "collectionType",
+  "collectionName": "orders",
+  "info": {
+    "singularName": "order",
+    "pluralName": "orders",
+    "displayName": "Order",
+    "description": "A pick-list ticket requested by a customer"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "session": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::store-session.store-session",
+      "inversedBy": "orders"
+    },
+    "customer": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.order-item"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": ["requested", "picking", "ready", "completed", "cancelled"],
+      "default": "requested"
+    },
+    "requestedAt": {
+      "type": "datetime"
+    },
+    "completedAt": {
+      "type": "datetime"
+    },
+    "handledBy": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "totalItems": {
+      "type": "integer",
+      "default": 0
+    }
+  }
+}

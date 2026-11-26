@@ -14,9 +14,17 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as FounderRouteImport } from './routes/founder'
 import { Route as InfrastructureRouteImport } from './routes/infrastructure'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as WholesaleRouteImport } from './routes/wholesale'
+import { Route as ShowroomIndexRouteImport } from './routes/showroom/index'
+import { Route as ShowroomCartRouteImport } from './routes/showroom/cart'
+import { Route as ShowroomUnlockRouteImport } from './routes/showroom/unlock'
+import { Route as StaffAdminDashboardRouteImport } from './routes/staff/admin-dashboard'
+import { Route as StaffDashboardRouteImport } from './routes/staff/dashboard'
+import { Route as StaffLoginRouteImport } from './routes/staff/login'
+import { Route as ShowroomCategoryDocumentIdRouteImport } from './routes/showroom/category/$documentId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -43,6 +51,11 @@ const InfrastructureRoute = InfrastructureRouteImport.update({
   path: '/infrastructure',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductsRoute = ProductsRouteImport.update({
   id: '/products',
   path: '/products',
@@ -58,6 +71,42 @@ const WholesaleRoute = WholesaleRouteImport.update({
   path: '/wholesale',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ShowroomIndexRoute = ShowroomIndexRouteImport.update({
+  id: '/showroom/',
+  path: '/showroom/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShowroomCartRoute = ShowroomCartRouteImport.update({
+  id: '/showroom/cart',
+  path: '/showroom/cart',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShowroomUnlockRoute = ShowroomUnlockRouteImport.update({
+  id: '/showroom/unlock',
+  path: '/showroom/unlock',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StaffAdminDashboardRoute = StaffAdminDashboardRouteImport.update({
+  id: '/staff/admin-dashboard',
+  path: '/staff/admin-dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StaffDashboardRoute = StaffDashboardRouteImport.update({
+  id: '/staff/dashboard',
+  path: '/staff/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StaffLoginRoute = StaffLoginRouteImport.update({
+  id: '/staff/login',
+  path: '/staff/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShowroomCategoryDocumentIdRoute =
+  ShowroomCategoryDocumentIdRouteImport.update({
+    id: '/showroom/category/$documentId',
+    path: '/showroom/category/$documentId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -65,9 +114,17 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/founder': typeof FounderRoute
   '/infrastructure': typeof InfrastructureRoute
+  '/login': typeof LoginRoute
   '/products': typeof ProductsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/wholesale': typeof WholesaleRoute
+  '/showroom/cart': typeof ShowroomCartRoute
+  '/showroom/unlock': typeof ShowroomUnlockRoute
+  '/staff/admin-dashboard': typeof StaffAdminDashboardRoute
+  '/staff/dashboard': typeof StaffDashboardRoute
+  '/staff/login': typeof StaffLoginRoute
+  '/showroom/': typeof ShowroomIndexRoute
+  '/showroom/category/$documentId': typeof ShowroomCategoryDocumentIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -75,9 +132,17 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/founder': typeof FounderRoute
   '/infrastructure': typeof InfrastructureRoute
+  '/login': typeof LoginRoute
   '/products': typeof ProductsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/wholesale': typeof WholesaleRoute
+  '/showroom/cart': typeof ShowroomCartRoute
+  '/showroom/unlock': typeof ShowroomUnlockRoute
+  '/staff/admin-dashboard': typeof StaffAdminDashboardRoute
+  '/staff/dashboard': typeof StaffDashboardRoute
+  '/staff/login': typeof StaffLoginRoute
+  '/showroom': typeof ShowroomIndexRoute
+  '/showroom/category/$documentId': typeof ShowroomCategoryDocumentIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -86,9 +151,17 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/founder': typeof FounderRoute
   '/infrastructure': typeof InfrastructureRoute
+  '/login': typeof LoginRoute
   '/products': typeof ProductsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/wholesale': typeof WholesaleRoute
+  '/showroom/cart': typeof ShowroomCartRoute
+  '/showroom/unlock': typeof ShowroomUnlockRoute
+  '/staff/admin-dashboard': typeof StaffAdminDashboardRoute
+  '/staff/dashboard': typeof StaffDashboardRoute
+  '/staff/login': typeof StaffLoginRoute
+  '/showroom/': typeof ShowroomIndexRoute
+  '/showroom/category/$documentId': typeof ShowroomCategoryDocumentIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -98,9 +171,17 @@ export interface FileRouteTypes {
     | '/contact'
     | '/founder'
     | '/infrastructure'
+    | '/login'
     | '/products'
     | '/sitemap.xml'
     | '/wholesale'
+    | '/showroom/cart'
+    | '/showroom/unlock'
+    | '/staff/admin-dashboard'
+    | '/staff/dashboard'
+    | '/staff/login'
+    | '/showroom/'
+    | '/showroom/category/$documentId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -108,9 +189,17 @@ export interface FileRouteTypes {
     | '/contact'
     | '/founder'
     | '/infrastructure'
+    | '/login'
     | '/products'
     | '/sitemap.xml'
     | '/wholesale'
+    | '/showroom/cart'
+    | '/showroom/unlock'
+    | '/staff/admin-dashboard'
+    | '/staff/dashboard'
+    | '/staff/login'
+    | '/showroom'
+    | '/showroom/category/$documentId'
   id:
     | '__root__'
     | '/'
@@ -118,9 +207,17 @@ export interface FileRouteTypes {
     | '/contact'
     | '/founder'
     | '/infrastructure'
+    | '/login'
     | '/products'
     | '/sitemap.xml'
     | '/wholesale'
+    | '/showroom/cart'
+    | '/showroom/unlock'
+    | '/staff/admin-dashboard'
+    | '/staff/dashboard'
+    | '/staff/login'
+    | '/showroom/'
+    | '/showroom/category/$documentId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -129,9 +226,17 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   FounderRoute: typeof FounderRoute
   InfrastructureRoute: typeof InfrastructureRoute
+  LoginRoute: typeof LoginRoute
   ProductsRoute: typeof ProductsRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   WholesaleRoute: typeof WholesaleRoute
+  ShowroomCartRoute: typeof ShowroomCartRoute
+  ShowroomUnlockRoute: typeof ShowroomUnlockRoute
+  StaffAdminDashboardRoute: typeof StaffAdminDashboardRoute
+  StaffDashboardRoute: typeof StaffDashboardRoute
+  StaffLoginRoute: typeof StaffLoginRoute
+  ShowroomIndexRoute: typeof ShowroomIndexRoute
+  ShowroomCategoryDocumentIdRoute: typeof ShowroomCategoryDocumentIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -171,6 +276,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InfrastructureRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/products': {
       id: '/products'
       path: '/products'
@@ -192,6 +304,55 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WholesaleRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/showroom/': {
+      id: '/showroom/'
+      path: '/showroom'
+      fullPath: '/showroom/'
+      preLoaderRoute: typeof ShowroomIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/showroom/cart': {
+      id: '/showroom/cart'
+      path: '/showroom/cart'
+      fullPath: '/showroom/cart'
+      preLoaderRoute: typeof ShowroomCartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/showroom/unlock': {
+      id: '/showroom/unlock'
+      path: '/showroom/unlock'
+      fullPath: '/showroom/unlock'
+      preLoaderRoute: typeof ShowroomUnlockRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/staff/admin-dashboard': {
+      id: '/staff/admin-dashboard'
+      path: '/staff/admin-dashboard'
+      fullPath: '/staff/admin-dashboard'
+      preLoaderRoute: typeof StaffAdminDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/staff/dashboard': {
+      id: '/staff/dashboard'
+      path: '/staff/dashboard'
+      fullPath: '/staff/dashboard'
+      preLoaderRoute: typeof StaffDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/staff/login': {
+      id: '/staff/login'
+      path: '/staff/login'
+      fullPath: '/staff/login'
+      preLoaderRoute: typeof StaffLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/showroom/category/$documentId': {
+      id: '/showroom/category/$documentId'
+      path: '/showroom/category/$documentId'
+      fullPath: '/showroom/category/$documentId'
+      preLoaderRoute: typeof ShowroomCategoryDocumentIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -201,9 +362,17 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   FounderRoute: FounderRoute,
   InfrastructureRoute: InfrastructureRoute,
+  LoginRoute: LoginRoute,
   ProductsRoute: ProductsRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   WholesaleRoute: WholesaleRoute,
+  ShowroomCartRoute: ShowroomCartRoute,
+  ShowroomUnlockRoute: ShowroomUnlockRoute,
+  StaffAdminDashboardRoute: StaffAdminDashboardRoute,
+  StaffDashboardRoute: StaffDashboardRoute,
+  StaffLoginRoute: StaffLoginRoute,
+  ShowroomIndexRoute: ShowroomIndexRoute,
+  ShowroomCategoryDocumentIdRoute: ShowroomCategoryDocumentIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

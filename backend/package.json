@@ -19,6 +19,7 @@
     "@strapi/provider-upload-aws-s3": "^5.50.2",
     "@strapi/strapi": "5.50.2",
     "better-sqlite3": "12.8.0",
+    "google-auth-library": "^11.3.4",
     "pg": "^8.22.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
