@@ -20,11 +20,13 @@ export function setAuthToken(token: string | null) {
   authToken = token;
 }
 
+const API_BASE = typeof window === "undefined" ? `${STRAPI_URL}/api` : "/api/portal";
+
 export async function portalRequest<T = any>(
   path: string,
   options: { method?: string; body?: any } = {},
 ): Promise<T> {
-  const res = await fetch(`${STRAPI_URL}/api${path}`, {
+  const res = await fetch(`${API_BASE}${path}`, {
     method: options.method ?? "GET",
     headers: {
       "Content-Type": "application/json",

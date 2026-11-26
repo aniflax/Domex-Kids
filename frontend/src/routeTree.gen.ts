@@ -9,56 +9,27 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as AboutRouteImport } from './routes/about'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as FounderRouteImport } from './routes/founder'
-import { Route as InfrastructureRouteImport } from './routes/infrastructure'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as ProductsRouteImport } from './routes/products'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as WholesaleRouteImport } from './routes/wholesale'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as ProductsRouteImport } from './routes/products'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as InfrastructureRouteImport } from './routes/infrastructure'
+import { Route as FounderRouteImport } from './routes/founder'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as ShowroomIndexRouteImport } from './routes/showroom/index'
-import { Route as ShowroomCartRouteImport } from './routes/showroom/cart'
-import { Route as ShowroomUnlockRouteImport } from './routes/showroom/unlock'
-import { Route as StaffAdminDashboardRouteImport } from './routes/staff/admin-dashboard'
-import { Route as StaffDashboardRouteImport } from './routes/staff/dashboard'
 import { Route as StaffLoginRouteImport } from './routes/staff/login'
+import { Route as StaffDashboardRouteImport } from './routes/staff/dashboard'
+import { Route as StaffAdminDashboardRouteImport } from './routes/staff/admin-dashboard'
+import { Route as ShowroomUnlockRouteImport } from './routes/showroom/unlock'
+import { Route as ShowroomCartRouteImport } from './routes/showroom/cart'
 import { Route as ShowroomCategoryDocumentIdRouteImport } from './routes/showroom/category/$documentId'
+import { Route as ApiPortalSplatRouteImport } from './routes/api/portal/$'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FounderRoute = FounderRouteImport.update({
-  id: '/founder',
-  path: '/founder',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const InfrastructureRoute = InfrastructureRouteImport.update({
-  id: '/infrastructure',
-  path: '/infrastructure',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProductsRoute = ProductsRouteImport.update({
-  id: '/products',
-  path: '/products',
+const WholesaleRoute = WholesaleRouteImport.update({
+  id: '/wholesale',
+  path: '/wholesale',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -66,9 +37,39 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
-const WholesaleRoute = WholesaleRouteImport.update({
-  id: '/wholesale',
-  path: '/wholesale',
+const ProductsRoute = ProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InfrastructureRoute = InfrastructureRouteImport.update({
+  id: '/infrastructure',
+  path: '/infrastructure',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FounderRoute = FounderRouteImport.update({
+  id: '/founder',
+  path: '/founder',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ShowroomIndexRoute = ShowroomIndexRouteImport.update({
@@ -76,19 +77,9 @@ const ShowroomIndexRoute = ShowroomIndexRouteImport.update({
   path: '/showroom/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ShowroomCartRoute = ShowroomCartRouteImport.update({
-  id: '/showroom/cart',
-  path: '/showroom/cart',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ShowroomUnlockRoute = ShowroomUnlockRouteImport.update({
-  id: '/showroom/unlock',
-  path: '/showroom/unlock',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const StaffAdminDashboardRoute = StaffAdminDashboardRouteImport.update({
-  id: '/staff/admin-dashboard',
-  path: '/staff/admin-dashboard',
+const StaffLoginRoute = StaffLoginRouteImport.update({
+  id: '/staff/login',
+  path: '/staff/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const StaffDashboardRoute = StaffDashboardRouteImport.update({
@@ -96,9 +87,19 @@ const StaffDashboardRoute = StaffDashboardRouteImport.update({
   path: '/staff/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
-const StaffLoginRoute = StaffLoginRouteImport.update({
-  id: '/staff/login',
-  path: '/staff/login',
+const StaffAdminDashboardRoute = StaffAdminDashboardRouteImport.update({
+  id: '/staff/admin-dashboard',
+  path: '/staff/admin-dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShowroomUnlockRoute = ShowroomUnlockRouteImport.update({
+  id: '/showroom/unlock',
+  path: '/showroom/unlock',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShowroomCartRoute = ShowroomCartRouteImport.update({
+  id: '/showroom/cart',
+  path: '/showroom/cart',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ShowroomCategoryDocumentIdRoute =
@@ -107,6 +108,11 @@ const ShowroomCategoryDocumentIdRoute =
     path: '/showroom/category/$documentId',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPortalSplatRoute = ApiPortalSplatRouteImport.update({
+  id: '/api/portal/$',
+  path: '/api/portal/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -124,6 +130,7 @@ export interface FileRoutesByFullPath {
   '/staff/dashboard': typeof StaffDashboardRoute
   '/staff/login': typeof StaffLoginRoute
   '/showroom/': typeof ShowroomIndexRoute
+  '/api/portal/$': typeof ApiPortalSplatRoute
   '/showroom/category/$documentId': typeof ShowroomCategoryDocumentIdRoute
 }
 export interface FileRoutesByTo {
@@ -142,6 +149,7 @@ export interface FileRoutesByTo {
   '/staff/dashboard': typeof StaffDashboardRoute
   '/staff/login': typeof StaffLoginRoute
   '/showroom': typeof ShowroomIndexRoute
+  '/api/portal/$': typeof ApiPortalSplatRoute
   '/showroom/category/$documentId': typeof ShowroomCategoryDocumentIdRoute
 }
 export interface FileRoutesById {
@@ -161,6 +169,7 @@ export interface FileRoutesById {
   '/staff/dashboard': typeof StaffDashboardRoute
   '/staff/login': typeof StaffLoginRoute
   '/showroom/': typeof ShowroomIndexRoute
+  '/api/portal/$': typeof ApiPortalSplatRoute
   '/showroom/category/$documentId': typeof ShowroomCategoryDocumentIdRoute
 }
 export interface FileRouteTypes {
@@ -181,6 +190,7 @@ export interface FileRouteTypes {
     | '/staff/dashboard'
     | '/staff/login'
     | '/showroom/'
+    | '/api/portal/$'
     | '/showroom/category/$documentId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -199,6 +209,7 @@ export interface FileRouteTypes {
     | '/staff/dashboard'
     | '/staff/login'
     | '/showroom'
+    | '/api/portal/$'
     | '/showroom/category/$documentId'
   id:
     | '__root__'
@@ -217,6 +228,7 @@ export interface FileRouteTypes {
     | '/staff/dashboard'
     | '/staff/login'
     | '/showroom/'
+    | '/api/portal/$'
     | '/showroom/category/$documentId'
   fileRoutesById: FileRoutesById
 }
@@ -236,58 +248,17 @@ export interface RootRouteChildren {
   StaffDashboardRoute: typeof StaffDashboardRoute
   StaffLoginRoute: typeof StaffLoginRoute
   ShowroomIndexRoute: typeof ShowroomIndexRoute
+  ApiPortalSplatRoute: typeof ApiPortalSplatRoute
   ShowroomCategoryDocumentIdRoute: typeof ShowroomCategoryDocumentIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/founder': {
-      id: '/founder'
-      path: '/founder'
-      fullPath: '/founder'
-      preLoaderRoute: typeof FounderRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/infrastructure': {
-      id: '/infrastructure'
-      path: '/infrastructure'
-      fullPath: '/infrastructure'
-      preLoaderRoute: typeof InfrastructureRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/products': {
-      id: '/products'
-      path: '/products'
-      fullPath: '/products'
-      preLoaderRoute: typeof ProductsRouteImport
+    '/wholesale': {
+      id: '/wholesale'
+      path: '/wholesale'
+      fullPath: '/wholesale'
+      preLoaderRoute: typeof WholesaleRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap.xml': {
@@ -297,11 +268,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/wholesale': {
-      id: '/wholesale'
-      path: '/wholesale'
-      fullPath: '/wholesale'
-      preLoaderRoute: typeof WholesaleRouteImport
+    '/products': {
+      id: '/products'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof ProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/infrastructure': {
+      id: '/infrastructure'
+      path: '/infrastructure'
+      fullPath: '/infrastructure'
+      preLoaderRoute: typeof InfrastructureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/founder': {
+      id: '/founder'
+      path: '/founder'
+      fullPath: '/founder'
+      preLoaderRoute: typeof FounderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/showroom/': {
@@ -311,25 +324,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShowroomIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/showroom/cart': {
-      id: '/showroom/cart'
-      path: '/showroom/cart'
-      fullPath: '/showroom/cart'
-      preLoaderRoute: typeof ShowroomCartRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/showroom/unlock': {
-      id: '/showroom/unlock'
-      path: '/showroom/unlock'
-      fullPath: '/showroom/unlock'
-      preLoaderRoute: typeof ShowroomUnlockRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/staff/admin-dashboard': {
-      id: '/staff/admin-dashboard'
-      path: '/staff/admin-dashboard'
-      fullPath: '/staff/admin-dashboard'
-      preLoaderRoute: typeof StaffAdminDashboardRouteImport
+    '/staff/login': {
+      id: '/staff/login'
+      path: '/staff/login'
+      fullPath: '/staff/login'
+      preLoaderRoute: typeof StaffLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/staff/dashboard': {
@@ -339,11 +338,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StaffDashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/staff/login': {
-      id: '/staff/login'
-      path: '/staff/login'
-      fullPath: '/staff/login'
-      preLoaderRoute: typeof StaffLoginRouteImport
+    '/staff/admin-dashboard': {
+      id: '/staff/admin-dashboard'
+      path: '/staff/admin-dashboard'
+      fullPath: '/staff/admin-dashboard'
+      preLoaderRoute: typeof StaffAdminDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/showroom/unlock': {
+      id: '/showroom/unlock'
+      path: '/showroom/unlock'
+      fullPath: '/showroom/unlock'
+      preLoaderRoute: typeof ShowroomUnlockRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/showroom/cart': {
+      id: '/showroom/cart'
+      path: '/showroom/cart'
+      fullPath: '/showroom/cart'
+      preLoaderRoute: typeof ShowroomCartRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/showroom/category/$documentId': {
@@ -351,6 +364,13 @@ declare module '@tanstack/react-router' {
       path: '/showroom/category/$documentId'
       fullPath: '/showroom/category/$documentId'
       preLoaderRoute: typeof ShowroomCategoryDocumentIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/portal/$': {
+      id: '/api/portal/$'
+      path: '/api/portal/$'
+      fullPath: '/api/portal/$'
+      preLoaderRoute: typeof ApiPortalSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -372,6 +392,7 @@ const rootRouteChildren: RootRouteChildren = {
   StaffDashboardRoute: StaffDashboardRoute,
   StaffLoginRoute: StaffLoginRoute,
   ShowroomIndexRoute: ShowroomIndexRoute,
+  ApiPortalSplatRoute: ApiPortalSplatRoute,
   ShowroomCategoryDocumentIdRoute: ShowroomCategoryDocumentIdRoute,
 }
 export const routeTree = rootRouteImport
